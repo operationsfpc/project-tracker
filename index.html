@@ -1,0 +1,3125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Tracker Portal</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    :root {
+      --bg: #f4f5f9;
+      --bg2: #fff;
+      --bg3: #eef0f6;
+      --surface: #f0f2f8;
+      --surface2: #e8eaf2;
+      --border: rgba(0, 0, 0, 0.07);
+      --border2: rgba(0, 0, 0, 0.12);
+      --ink: #111827;
+      --ink2: #374151;
+      --ink3: #9ca3af;
+      --accent: #6c63ff;
+      --accent2: #5046e5;
+      --accent-lt: rgba(108, 99, 255, 0.1);
+      --green: #16a34a;
+      --green-lt: rgba(22, 163, 74, 0.12);
+      --amber: #d97706;
+      --amber-lt: rgba(217, 119, 6, 0.12);
+      --red: #dc2626;
+      --red-lt: rgba(220, 38, 38, 0.12);
+      --blue: #2563eb;
+      --blue-lt: rgba(37, 99, 235, 0.12);
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: linear-gradient(135deg, #EBF3FA 0%, #F4F8FC 60%, #FFFFFF 100%);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 14px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.94)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0)
+      }
+
+      25% {
+        transform: translateX(-6px)
+      }
+
+      75% {
+        transform: translateX(6px)
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg3)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--surface2);
+      border-radius: 99px
+    }
+
+    /* ── LANDING ── */
+    #landingScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #landingScreen::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(9, 209, 199, 0.13) 0%, transparent 70%);
+      top: -150px;
+      right: -150px;
+      pointer-events: none;
+    }
+
+    #landingScreen::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(128, 238, 107, 0.09) 0%, transparent 70%);
+      bottom: -100px;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    .landing-wrap {
+      width: 100%;
+      max-width: 520px;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.5s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .landing-title {
+      font-family: var(--font-head);
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .landing-title span {
+      color: #7F00FF;
+    }
+
+    .landing-sub {
+      font-size: 14px;
+      color: var(--ink3);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .landing-card {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .landing-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin-bottom: 10px;
+    }
+
+    .college-select-wrap {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .college-select {
+      width: 100%;
+      padding: 14px 44px 14px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      transition: border-color 0.15s;
+    }
+
+    .college-select:focus {
+      border-color: var(--accent);
+    }
+
+    .college-select-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink3);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    .landing-btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .landing-btn:hover {
+      background: var(--accent2);
+      transform: translateY(-1px);
+    }
+
+    .landing-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── LOGIN ── */
+    #loginScreen {
+      min-height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #loginScreen.show {
+      display: flex;
+    }
+
+    .login-box {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 44px;
+      width: 100%;
+      max-width: 440px;
+      animation: popIn 0.4s cubic-bezier(.22, 1, .36, 1);
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 8px 48px rgba(0, 0, 0, 0.12);
+    }
+
+    .login-title {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .login-sub {
+      font-size: 13px;
+      color: var(--ink3);
+      margin-bottom: 28px;
+    }
+
+    .login-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin-bottom: 8px;
+    }
+
+    .role-btn {
+      padding: 12px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--ink2);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .role-btn:hover {
+      border-color: var(--accent);
+      color: var(--ink);
+    }
+
+    .role-btn.selected {
+      background: var(--accent-lt);
+      border-color: var(--accent);
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .pin-input-wrap {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .pin-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 18px;
+      letter-spacing: 0.3em;
+      outline: none;
+      transition: border-color 0.15s;
+      text-align: center;
+    }
+
+    .pin-input:focus {
+      border-color: var(--accent);
+    }
+
+    .pin-input.error {
+      border-color: var(--red);
+      animation: shake 0.3s;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .login-btn:hover {
+      background: var(--accent2);
+      transform: translateY(-1px);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .login-error {
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 10px;
+      text-align: center;
+      min-height: 18px;
+    }
+
+    /* ── APP SHELL ── */
+    #appShell {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border2);
+      padding: 0 28px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-brand {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .topbar-brand span {
+      color: #7F00FF;
+    }
+
+    .topbar-college {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink3);
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 99px;
+      padding: 4px 12px;
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink2);
+    }
+
+    .user-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .logout-btn {
+      padding: 7px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 99px;
+      color: var(--ink2);
+      font-family: var(--font-body);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-weight: 600;
+    }
+
+    .logout-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--green-lt);
+    }
+
+    .main-wrap {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: calc(100vh - 60px);
+    }
+
+    .sidebar {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      padding: 12px 20px 5px;
+      font-family: var(--font-body);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      color: var(--ink3);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+      font-family: var(--font-body);
+    }
+
+    .nav-item:hover {
+      color: var(--ink);
+      background: var(--surface);
+    }
+
+    .nav-item.active {
+      color: var(--accent2);
+      background: var(--accent-lt);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 99px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .content {
+      padding: 28px 32px;
+      overflow-y: auto;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    .page-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #7F00FF;
+      margin-bottom: 5px;
+    }
+
+    .page-title {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .page-sub {
+      font-size: 13px;
+      color: var(--ink3);
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink3);
+    }
+
+    .stat-value {
+      font-family: var(--font-head);
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-top: 4px;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--ink3);
+      margin-top: 4px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink3);
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink2);
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover td {
+      background: var(--surface);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+    }
+
+    .badge-green {
+      background: var(--green-lt);
+      color: var(--green);
+    }
+
+    .badge-amber {
+      background: var(--amber-lt);
+      color: var(--amber);
+    }
+
+    .badge-red {
+      background: var(--red-lt);
+      color: var(--red);
+    }
+
+    .badge-blue {
+      background: var(--blue-lt);
+      color: var(--blue);
+    }
+
+    .badge-grey {
+      background: var(--surface2);
+      color: var(--ink);
+      border: 1px solid var(--border2);
+    }
+
+    .week-btns {
+      display: flex;
+      gap: 5px;
+    }
+
+    .week-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--ink3);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      font-family: var(--font-body);
+    }
+
+    .week-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .week-btn.completed {
+      background: var(--green-lt);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .week-btn.in-progress {
+      background: var(--amber-lt);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .week-btn.not-started {
+      background: var(--surface);
+      border-color: var(--border2);
+      color: var(--ink3);
+    }
+
+    .score-display {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .score-high {
+      color: var(--green);
+    }
+
+    .score-mid {
+      color: var(--amber);
+    }
+
+    .score-low {
+      color: var(--red);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--ink2);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent2);
+    }
+
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 11px;
+    }
+
+    /* ── MODALS ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 33, 55, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      animation: fadeUp 0.2s ease;
+    }
+
+    .modal-box {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      animation: popIn 0.25s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .modal-header {
+      padding: 22px 26px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .modal-sub {
+      font-size: 12px;
+      color: var(--ink3);
+      margin-top: 3px;
+    }
+
+    .modal-close {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--ink3);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+      background: var(--red-lt);
+      color: var(--red);
+      border-color: rgba(255, 107, 138, 0.3);
+    }
+
+    .modal-body {
+      padding: 22px 26px;
+    }
+
+    .modal-footer {
+      padding: 16px 26px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* ── WEEK CARDS ── */
+    .week-cards-grid {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .week-card {
+      flex: 0 0 220px;
+      border: 2px solid var(--border2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg2);
+      transition: all 0.2s;
+    }
+
+    .week-card.wk-completed {
+      border-color: var(--green);
+    }
+
+    .week-card.wk-in-progress {
+      border-color: var(--amber);
+    }
+
+    .week-card.wk-not-started {
+      border-color: var(--border2);
+    }
+
+    .week-card-head {
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .week-card-head.wk-completed {
+      background: var(--green-lt);
+    }
+
+    .week-card-head.wk-in-progress {
+      background: var(--amber-lt);
+    }
+
+    .week-card-head.wk-not-started {
+      background: var(--surface);
+    }
+
+    .week-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--ink2);
+    }
+
+    .wk-cycle-btn {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 99px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      font-family: var(--font-body);
+    }
+
+    .wk-cycle-btn.completed {
+      background: rgba(128, 238, 107, 0.2);
+      color: var(--green);
+    }
+
+    .wk-cycle-btn.in-progress {
+      background: rgba(70, 223, 177, 0.2);
+      color: var(--amber);
+    }
+
+    .wk-cycle-btn.not-started {
+      background: var(--surface2);
+      color: var(--ink);
+    }
+
+    .week-card-body {
+      padding: 10px 12px;
+    }
+
+    .week-textarea {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 12px;
+      outline: none;
+      resize: none;
+      height: auto;
+      min-height: 90px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+      line-height: 1.5;
+    }
+
+    .week-textarea:focus {
+      border-color: var(--accent);
+      background: var(--bg2);
+    }
+
+    .week-textarea::placeholder {
+      color: var(--ink3);
+    }
+
+    /* ── SCORE GRID ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .score-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+
+    .score-item-label {
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom: 8px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .score-item-max {
+      font-size: 10px;
+      color: var(--accent2);
+      font-weight: 700;
+      background: var(--accent-lt);
+      padding: 1px 6px;
+      border-radius: 99px;
+    }
+
+    .score-item-input {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg3);
+      border: 1.5px solid var(--border2);
+      border-radius: 6px;
+      color: var(--ink);
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .score-item-input:focus {
+      border-color: var(--accent);
+    }
+
+    .score-item-input.over-limit {
+      border-color: var(--red) !important;
+      background: var(--red-lt);
+    }
+
+    .score-item-bar {
+      height: 5px;
+      background: var(--surface2);
+      border-radius: 99px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .score-item-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--accent);
+      transition: width 0.3s ease, background 0.3s;
+    }
+
+    .score-total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(9, 209, 199, 0.12);
+      border: 1px solid rgba(9, 209, 199, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin-top: 14px;
+    }
+
+    .score-total-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent2);
+    }
+
+    .score-total-val {
+      font-family: var(--font-head);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent2);
+    }
+
+    /* ── FORMS ── */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink3);
+      margin-bottom: 7px;
+      display: block;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--accent);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .approval-select {
+      padding: 5px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      color: var(--ink2);
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .approval-select.status-approved {
+      background: var(--green-lt);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .approval-select.status-needs-revision {
+      background: var(--red-lt);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .approval-select.status-pending {
+      background: var(--surface);
+      border-color: var(--border2);
+      color: var(--ink2);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 13px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      z-index: 99999;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(.22, 1, .36, 1);
+      max-width: 340px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .toast-dot.success {
+      background: var(--green);
+    }
+
+    .toast-dot.error {
+      background: var(--red);
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* ── SEARCH & FILTERS ── */
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 14px 9px 36px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink3);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .filter-select {
+      padding: 9px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--ink2);
+      font-family: var(--font-body);
+      font-size: 13px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: var(--ink3);
+      font-size: 13px;
+    }
+
+    .empty-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      background: var(--bg3);
+      border-radius: 10px;
+      padding: 4px;
+      width: fit-content;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      color: var(--ink3);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab-btn.active {
+      background: var(--bg2);
+      color: var(--ink);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .export-btn {
+      padding: 8px 16px;
+      background: var(--green-lt);
+      border: 1px solid rgba(128, 238, 107, 0.3);
+      border-radius: var(--radius-sm);
+      color: var(--green);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .export-btn:hover {
+      background: var(--green);
+      color: #fff;
+    }
+
+    /* ── PROGRESS BARS ── */
+    .prog-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prog-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .prog-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--accent);
+      transition: width 0.5s ease;
+    }
+
+    .prog-pct {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink3);
+      min-width: 30px;
+    }
+
+    .student-info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .info-item {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .info-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink3);
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ── LOADING ── */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    #loadingOverlay .spinner {
+      width: 36px;
+      height: 36px;
+      border-width: 3px;
+    }
+
+    #loadingOverlay p {
+      font-size: 13px;
+      color: var(--ink3);
+    }
+
+    /* ── PROGRESS TABLE CELLS ── */
+    .prog-week-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 130px;
+    }
+
+    .prog-week-card {
+      border-radius: 9px;
+      padding: 9px 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1.5px solid var(--border2);
+      background: var(--surface);
+      text-align: left;
+      width: 100%;
+      font-family: var(--font-body);
+      min-height: 60px;
+      max-width: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .prog-week-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.09);
+    }
+
+    .prog-week-card.completed {
+      background: var(--green-lt);
+      border-color: var(--green);
+    }
+
+    .prog-week-card.in-progress {
+      background: var(--amber-lt);
+      border-color: var(--amber);
+    }
+
+    .prog-week-card.not-started {
+      background: var(--surface);
+      border-color: var(--border2);
+    }
+
+    .prog-wk-status {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .prog-wk-status.completed {
+      color: var(--green);
+    }
+
+    .prog-wk-status.in-progress {
+      color: var(--amber);
+    }
+
+    .prog-wk-status.not-started {
+      color: var(--ink3);
+    }
+
+    .prog-wk-note-text {
+      font-size: 10px;
+      color: var(--ink2);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      line-height: 1.4;
+      font-style: italic;
+      word-break: break-word;
+      white-space: pre-wrap;
+      max-width: 160px;
+    }
+
+    /* ── STUDENT NAME LINKS ── */
+    .student-name-link {
+      color: var(--accent2);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(108, 99, 255, 0.4);
+      transition: border-color 0.15s, color 0.15s;
+      background: none;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      font-family: var(--font-body);
+      font-size: 13px;
+      padding: 0;
+    }
+
+    .student-name-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .student-name-link.pop-active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      border-bottom-style: solid;
+    }
+
+    /* ── POPOVER ── */
+    .proj-popover {
+      position: fixed;
+      z-index: 99998;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+      padding: 18px 20px;
+      max-width: 420px;
+      min-width: 260px;
+      animation: popIn 0.18s cubic-bezier(.22, 1, .36, 1);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .proj-popover-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink3);
+    }
+
+    .proj-popover-project {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 10px;
+      margin-top: 4px;
+    }
+
+    .proj-popover-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .proj-popover-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--ink3);
+    }
+
+    .proj-popover-row strong {
+      color: var(--ink2);
+      font-weight: 600;
+    }
+
+    /* ── PEER EVALUATION ── */
+    .peer-score-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .peer-score-high {
+      background: var(--green-lt);
+      color: var(--green);
+    }
+
+    .peer-score-mid {
+      background: var(--amber-lt);
+      color: var(--amber);
+    }
+
+    .peer-score-low {
+      background: var(--red-lt);
+      color: var(--red);
+    }
+
+    .peer-score-na {
+      background: var(--surface2);
+      color: var(--ink3);
+    }
+
+    .peer-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .peer-project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      transition: transform 0.2s;
+    }
+
+    .peer-project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .peer-project-owner {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink2);
+      margin-bottom: 3px;
+    }
+
+    .peer-project-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink3);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .peer-avg-large {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .peer-review-count {
+      font-size: 11px;
+      color: var(--ink3);
+      margin-top: 4px;
+    }
+
+    .loading-peer {
+      text-align: center;
+      padding: 32px;
+      color: var(--ink3);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ── FINAL SCORE ── */
+    .final-grade-legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .final-grade-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--ink3);
+    }
+
+    .final-grade-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px) {
+      .main-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .modal-overlay {
+        padding: 12px;
+      }
+
+      .modal-box {
+        border-radius: 14px;
+        max-height: 95vh;
+      }
+
+      .modal-body {
+        padding: 16px 18px;
+      }
+
+      .modal-header {
+        padding: 16px 18px 14px;
+      }
+
+      .modal-footer {
+        padding: 12px 18px;
+      }
+
+      .student-info-row {
+        grid-template-columns: 1fr;
+      }
+
+      .score-item-input {
+        font-size: 20px;
+      }
+
+      .landing-title {
+        font-size: 28px;
+      }
+
+      .peer-summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loadingOverlay" style="display:none;">
+    <div class="spinner"></div>
+    <p id="loadingMsg">Loading&hellip;</p>
+  </div>
+
+  <!-- PROJECT POPOVER -->
+  <div class="proj-popover" id="projPopover" style="display:none;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">
+      <div class="proj-popover-title">Project Details</div>
+      <button onclick="hideProjectPopover()"
+        style="width:22px;height:22px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);color:var(--ink3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;">&times;</button>
+    </div>
+    <div class="proj-popover-project" id="ppProject"></div>
+    <div class="proj-popover-meta" id="ppMeta"></div>
+  </div>
+
+  <!-- LANDING SCREEN -->
+  <div id="landingScreen">
+    <div class="landing-wrap">
+      <div class="landing-title">College <span>Project</span><br>Tracker Portal</div>
+      <div class="landing-sub">Select your institution to access the project tracking dashboard for mentors.</div>
+      <div class="landing-card">
+        <div class="landing-label">Select Institution</div>
+        <div class="college-select-wrap">
+          <select class="college-select" id="collegeSelect" onchange="onCollegeChange()">
+            <option value="">&mdash; Choose your college &mdash;</option>
+            <option value="alliance">Alliance University</option>
+            <option value="amet">AMET University</option>
+            <option value="asb">Asian School of Business</option>
+            <option value="bharathidasan">Bharathidasan College of Arts &amp; Science</option>
+            <option value="joy">Joy University</option>
+            <option value="kamaraj">Kamaraj College</option>
+            <option value="kamaraj-women">Kamaraj Women's College</option>
+            <option value="kristu">Kristu Jayanti (Deemed to be University)</option>
+            <option value="nagarathinam">Nagarathinam Angalammal Arts &amp; Science College</option>
+            <option value="niche">Noorul Islam Centre for Higher Education (NICHE)</option>
+            <option value="patrician">Patrician College of Arts &amp; Science</option>
+            <option value="rathinam">Rathinam College of Arts &amp; Science</option>
+            <option value="sasurie">Sasurie College of Arts and Science</option>
+            <option value="sdnb">SDNB Vaishnav College for Women</option>
+            <option value="amaraavathi">Sri Amaraavathi College of Arts &amp; Science</option>
+            <option value="sst">Sree Saraswathi Thyagaraja College</option>
+            <option value="studyworld">Study World Group of Institution</option>
+            <option value="svyasa">S-VYASA University</option>
+            <option value="takshashila">Takshashila University</option>
+            <option value="terf">TERF's College of Arts and Science</option>
+            <option value="tjs">TJS College of Arts and Science</option>
+            <option value="vinayaga">Vinayaga Mission's Research Foundation School of Arts &amp; Science</option>
+          </select>
+          <span class="college-select-icon">&#9662;</span>
+        </div>
+        <button class="landing-btn" id="goBtn" onclick="goToLogin()" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen">
+    <div class="login-box">
+      <div style="margin-bottom:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--ink3);">Signing in to</div>
+        <div style="font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--ink);margin-top:2px;"
+          id="loginCollegeName">&mdash;</div>
+      </div>
+      <div class="login-title">Mentor Login</div>
+      <div class="login-sub">Select Department, role and enter your PIN</div>
+      <div class="login-label">Select Department</div>
+      <div class="college-select-wrap" style="margin-bottom:14px;">
+        <select class="college-select" id="sectionSelect" onchange="selectSectionFromDropdown(this)">
+          <option value="">&mdash; Choose your Department &mdash;</option>
+        </select>
+        <span class="college-select-icon">&#9662;</span>
+      </div>
+      <div class="login-label">Select Your Name</div>
+      <div id="roleButtonsWrap" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div>
+      <div class="login-label" style="margin-top:4px;">Enter PIN</div>
+      <div class="pin-input-wrap">
+        <input type="password" class="pin-input" id="pinInput" maxlength="4" placeholder="&bull;&bull;&bull;&bull;"
+          oninput="onPinInput()" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="doLogin()" disabled>Sign In &rarr;</button>
+      <div class="login-error" id="loginError"></div>
+      <button onclick="backToLanding()"
+        style="width:100%;margin-top:12px;padding:11px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--ink3);font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;"
+        onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--ink3)'">&larr; Back to College
+        Selection</button>
+    </div>
+  </div>
+
+  <!-- APP SHELL -->
+  <div id="appShell">
+    <header class="topbar">
+      <div>
+        <div class="topbar-brand">Project<span>Tracker</span></div>
+      </div>
+      <div class="topbar-college" id="topbarCollege" style="display:none;">&mdash;</div>
+      <div class="topbar-right">
+        <div class="user-pill"><span class="user-dot"></span><span id="userLabel">&mdash;</span></div>
+        <button class="logout-btn" onclick="initApp()">&#8635; Refresh</button>
+        <button class="logout-btn" onclick="doLogout()">Logout</button>
+      </div>
+    </header>
+
+    <div class="main-wrap">
+      <aside class="sidebar">
+        <div class="nav-section-label">Navigation</div>
+        <div class="nav-item active" id="nav-dashboard" onclick="showPanel('dashboard',this)">
+          <span class="nav-icon"><i class="ti ti-layout-dashboard"></i></span> Dashboard
+        </div>
+        <div class="nav-item" id="nav-students" onclick="showPanel('students',this)">
+          <span class="nav-icon"><i class="ti ti-users"></i></span> My Students
+          <span class="nav-badge" id="navStudentCount">0</span>
+        </div>
+        <div class="nav-item" id="nav-progress" onclick="showPanel('progress',this)">
+          <span class="nav-icon"><i class="ti ti-chart-line"></i></span> Weekly Progress
+        </div>
+        <div class="nav-item" id="nav-evaluation" onclick="showPanel('evaluation',this)">
+          <span class="nav-icon"><i class="ti ti-clipboard-check"></i></span> Mentor Evaluation
+        </div>
+        <div class="nav-item" id="nav-peer" onclick="showPanel('peer',this)">
+          <span class="nav-icon"><i class="ti ti-users-group"></i></span> Peer Evaluation
+        </div>
+        <div class="nav-item" id="nav-finalscore" onclick="showPanel('finalscore',this)">
+          <span class="nav-icon"><i class="ti ti-medal"></i></span> Final Score
+        </div>
+        <div class="nav-item" id="nav-admin" style="display:none;" onclick="showPanel('admin',this)">
+          <span class="nav-icon"><i class="ti ti-shield-check"></i></span> Admin View
+        </div>
+      </aside>
+
+      <main class="content">
+
+        <!-- DASHBOARD -->
+        <div class="panel active" id="panel-dashboard">
+          <div class="page-header">
+            <div class="page-eyebrow">Overview</div>
+            <div class="page-title" id="dashTitle">Dashboard</div>
+            <div class="page-sub" id="dashSub">Loading&hellip;</div>
+          </div>
+          <div class="stats-row" id="statsRow"></div>
+          <div class="card">
+            <div class="card-title">My Students &mdash; Quick Overview</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>Progress</th>
+                    <th>Approval</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody id="dashTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- STUDENTS -->
+        <div class="panel" id="panel-students">
+          <div class="page-header">
+            <div class="page-eyebrow">Student List</div>
+            <div class="page-title">My Students</div>
+            <div class="page-sub">‼️IMPORTANT‼️Click student name to see their project details</div>
+          </div>
+          <div class="search-bar">
+            <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input"
+                id="studentSearch" placeholder="Search by name or project&hellip;" oninput="renderStudentList()"></div>
+            <select class="filter-select" id="approvalFilter" onchange="renderStudentList()">
+              <option value="">All Approvals</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="needs-revision">Needs Revision</option>
+            </select>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Register No.</th>
+                    <th>Weeks</th>
+                    <th>Approval</th>
+                  </tr>
+                </thead>
+                <tbody id="studentTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEKLY PROGRESS -->
+        <div class="panel" id="panel-progress">
+          <div class="page-header">
+            <div class="page-eyebrow">Track Progress</div>
+            <div class="page-title">Weekly Progress</div>
+            <div class="page-sub">Click any student name to see project details &mdash; click week cards to edit</div>
+          </div>
+          <div class="search-bar">
+            <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input"
+                id="progressSearch" placeholder="Search student&hellip;" oninput="renderProgressTable()"></div>
+            <button class="export-btn" onclick="exportProgressCSV()">&darr; Export CSV</button>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th style="text-align:center;">Week 1</th>
+                    <th style="text-align:center;">Week 2</th>
+                    <th style="text-align:center;">Week 3</th>
+                    <th style="text-align:center;">Week 4</th>
+                    <th>Summary</th>
+                  </tr>
+                </thead>
+                <tbody id="progressTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span
+                style="width:14px;height:14px;border-radius:3px;background:var(--green-lt);border:1px solid var(--green);display:inline-block;"></span>Completed
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span
+                style="width:14px;height:14px;border-radius:3px;background:var(--amber-lt);border:1px solid var(--amber);display:inline-block;"></span>In
+              Progress</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);"><span
+                style="width:14px;height:14px;border-radius:3px;background:var(--surface);border:1px solid var(--border2);display:inline-block;"></span>Not
+              Started</div>
+          </div>
+        </div>
+
+        <!-- MENTOR EVALUATION -->
+        <div class="panel" id="panel-evaluation">
+          <div class="page-header">
+            <div class="page-eyebrow">Mentor Evaluation</div>
+            <div class="page-title">Score Students</div>
+            <div class="page-sub">Click any student name to see project details &mdash; each criterion scored out of 20
+            </div>
+          </div>
+          <div class="search-bar">
+            <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input"
+                id="evalSearch" placeholder="Search student&hellip;" oninput="renderEvalTable()"></div>
+            <button class="export-btn" onclick="exportEvalCSV()">&darr; Export CSV</button>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Tech Quality</th>
+                    <th>Problem Fit</th>
+                    <th>Effort</th>
+                    <th>Presentation</th>
+                    <th>Impact</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="evalTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PEER EVALUATION -->
+        <div class="panel" id="panel-peer">
+          <div class="page-header">
+            <div class="page-eyebrow">Peer Review</div>
+            <div class="page-title">Peer Evaluation</div>
+            <div class="page-sub">Student-to-student scores &mdash; total out of 50 per project</div>
+          </div>
+          <div id="peerTabRow" class="tab-row" style="margin-bottom:16px;"></div>
+          <div class="stats-row" id="peerStatsRow" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+          </div>
+          <div style="margin-bottom:14px;">
+            <div
+              style="font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px;">
+              Project Totals</div>
+            <div style="font-size:12px;color:var(--ink3);margin-bottom:12px;">Average peer score per project &mdash; out
+              of 50</div>
+            <div class="peer-summary-grid" id="peerSummaryCards"></div>
+          </div>
+          <div class="search-bar">
+            <div class="search-wrap"><span class="search-icon">&#8981;</span><input type="text" class="search-input"
+                id="peerSearch" placeholder="Search by project title or reviewer name&hellip;"
+                oninput="renderPeerTable()"></div>
+            <button class="export-btn" onclick="exportPeerCSV()">&darr; Export CSV</button>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Project</th>
+                    <th>Project Owner</th>
+                    <th>Reviewer</th>
+                    <th>Reviewer College</th>
+                    <th style="text-align:center;">Clarity</th>
+                    <th style="text-align:center;">Innovation</th>
+                    <th style="text-align:center;">Execution</th>
+                    <th style="text-align:center;">Usability</th>
+                    <th style="text-align:center;">Overall</th>
+                    <th style="text-align:center;">Total /50</th>
+                    <th>Comments</th>
+                  </tr>
+                </thead>
+                <tbody id="peerTableBody">
+                  <tr>
+                    <td colspan="12">
+                      <div class="loading-peer"><span class="spinner"></span> Loading peer reviews&hellip;</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- FINAL SCORE -->
+        <div class="panel" id="panel-finalscore">
+          <div class="page-header">
+            <div class="page-eyebrow">Results</div>
+            <div class="page-title">Final Score Summary</div>
+            <div class="page-sub">Peer score weighted at 30%, Mentor score at 70% &mdash; total out of 100</div>
+          </div>
+          <div class="stats-row" id="finalStatsRow" style="grid-template-columns:repeat(4,1fr);"></div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:12px;">
+            <button class="export-btn" onclick="exportFinalCSV()">&darr; Export CSV</button>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>Register No.</th>
+                    <th>Course</th>
+                    <th>Mentor</th>
+                    <th style="text-align:center;">Peer Raw<br>(50)</th>
+                    <th style="text-align:center;">Peer Score<br>(30)</th>
+                    <th style="text-align:center;">Mentor Raw<br>(100)</th>
+                    <th style="text-align:center;">Mentor Score<br>(70)</th>
+                    <th style="text-align:center;">Final Score<br>(100)</th>
+                    <th style="text-align:center;">Grade</th>
+                  </tr>
+                </thead>
+                <tbody id="finalTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="final-grade-legend">
+            <div class="final-grade-legend-item"><span class="final-grade-dot"
+                style="background:var(--green);"></span>Excellent (&ge;85)</div>
+            <div class="final-grade-legend-item"><span class="final-grade-dot"
+                style="background:var(--blue);"></span>Very Good (&ge;70)</div>
+            <div class="final-grade-legend-item"><span class="final-grade-dot"
+                style="background:var(--amber);"></span>Good (&ge;55)</div>
+            <div class="final-grade-legend-item"><span class="final-grade-dot"
+                style="background:var(--accent);"></span>Pass (&ge;40)</div>
+            <div class="final-grade-legend-item"><span class="final-grade-dot"
+                style="background:var(--red);"></span>Fail (&lt;40)</div>
+            <div class="final-grade-legend-item"><span class="final-grade-dot"
+                style="background:var(--surface2);border:1px solid var(--border2);"></span>Not Started</div>
+          </div>
+        </div>
+
+        <!-- ADMIN -->
+        <div class="panel" id="panel-admin">
+          <div class="page-header">
+            <div class="page-eyebrow">Admin View</div>
+            <div class="page-title">All Students</div>
+            <div class="page-sub">Click any student name to see their project details</div>
+          </div>
+          <div
+            style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+            <div class="tab-row" id="adminTabRow"></div>
+            <button class="export-btn" onclick="exportCSV()">&darr; Export CSV</button>
+          </div>
+          <div class="stats-row" id="adminStatsRow" style="grid-template-columns:repeat(3,1fr);"></div>
+          <div class="card" style="padding:0;overflow:hidden;margin-top:16px;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Section</th>
+                    <th>Mentor</th>
+                    <th>Weeks Done</th>
+                    <th>Approval</th>
+                    <th>Score /100</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- WEEK MODAL -->
+  <div class="modal-overlay" id="weekModal" onclick="if(event.target===this)closeModal('weekModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="weekModalTitle">Weekly Progress</div>
+          <div class="modal-sub">Status &amp; note stored per week</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('weekModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="week-cards-grid" id="weekCardsGrid"></div>
+        <div
+          style="background:var(--blue-lt);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--blue);font-weight:500;margin-top:4px;">
+          Click the status badge on any card to cycle: Not Started &rarr; In Progress &rarr; Completed. Add notes per
+          week. Click <strong>Save</strong> to persist.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('weekModal')">Cancel</button>
+        <button class="btn btn-primary" id="saveWeekBtn" onclick="saveAllWeeks()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVAL MODAL -->
+  <div class="modal-overlay" id="evalModal" onclick="if(event.target===this)closeModal('evalModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="evalModalTitle">Mentor Evaluation</div>
+          <div class="modal-sub" id="evalModalSub"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal('evalModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="student-info-row" id="evalStudentInfo"></div>
+        <div
+          style="background:var(--amber-lt);border:1px solid rgba(217,119,6,0.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--amber);font-weight:600;">
+          Each score must be 0&ndash;20
+        </div>
+        <div class="score-grid">
+          <div class="score-item">
+            <div class="score-item-label">Tech / Functional Quality <span class="score-item-max">max 20</span></div>
+            <input type="number" class="score-item-input" id="sc_tech" min="0" max="20" placeholder="0"
+              oninput="calcTotal()">
+            <div class="score-item-bar">
+              <div class="score-item-bar-fill" id="bar_tech" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-item-label">Problem-Solution Fit <span class="score-item-max">max 20</span></div>
+            <input type="number" class="score-item-input" id="sc_fit" min="0" max="20" placeholder="0"
+              oninput="calcTotal()">
+            <div class="score-item-bar">
+              <div class="score-item-bar-fill" id="bar_fit" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-item-label">Effort &amp; Ownership <span class="score-item-max">max 20</span></div>
+            <input type="number" class="score-item-input" id="sc_effort" min="0" max="20" placeholder="0"
+              oninput="calcTotal()">
+            <div class="score-item-bar">
+              <div class="score-item-bar-fill" id="bar_effort" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-item-label">Presentation <span class="score-item-max">max 20</span></div>
+            <input type="number" class="score-item-input" id="sc_pres" min="0" max="20" placeholder="0"
+              oninput="calcTotal()">
+            <div class="score-item-bar">
+              <div class="score-item-bar-fill" id="bar_pres" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-item-label">Practical Impact <span class="score-item-max">max 20</span></div>
+            <input type="number" class="score-item-input" id="sc_impact" min="0" max="20" placeholder="0"
+              oninput="calcTotal()">
+            <div class="score-item-bar">
+              <div class="score-item-bar-fill" id="bar_impact" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="score-total-row">
+          <div>
+            <div class="score-total-label">Total Score</div>
+            <div style="font-size:11px;color:var(--ink3);margin-top:2px;">Sum of all 5 criteria</div>
+          </div>
+          <div class="score-total-val" id="scoreTotalDisplay">0 / 100</div>
+        </div>
+        <div class="form-group" style="margin-top:14px;margin-bottom:0;"><label class="form-label">Remarks
+            (optional)</label><textarea class="form-textarea" id="evalRemarks"
+            placeholder="Add evaluation remarks, strengths, areas for improvement&hellip;"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('evalModal')">Cancel</button>
+        <button class="btn btn-primary" id="saveEvalBtn" onclick="saveEvaluation()">Save Evaluation</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span class="toast-dot success" id="toastDot"></span><span id="toastMsg">Saved!</span>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://scuvqabxqqtvibjutoyj.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_wptvdh6rVvEy2uSppa4Ckw_ozPuC6L4';
+    const PEER_SUPABASE_URL = 'https://scuvqabxqqtvibjutoyj.supabase.co';
+    const PEER_SUPABASE_KEY = 'sb_publishable_wptvdh6rVvEy2uSppa4Ckw_ozPuC6L4';
+
+    async function sbPeer(path) {
+      // Paginates through PostgREST's default row cap using the Range header.
+      // Without this, any query returning more than ~1000 rows gets silently truncated.
+      const pageSize = 1000;
+      let from = 0, all = [], keepGoing = true;
+      while (keepGoing) {
+        const res = await fetch(PEER_SUPABASE_URL + '/rest/v1/' + path, {
+          headers: {
+            'apikey': PEER_SUPABASE_KEY,
+            'Authorization': 'Bearer ' + PEER_SUPABASE_KEY,
+            'Accept': 'application/json',
+            'Range-Unit': 'items',
+            'Range': from + '-' + (from + pageSize - 1)
+          }
+        });
+        const text = await res.text();
+        if (!res.ok) throw new Error(text || 'Peer DB error: ' + res.status);
+        const page = text ? JSON.parse(text) : [];
+        all = all.concat(page);
+        keepGoing = page.length === pageSize;
+        from += pageSize;
+      }
+      return all;
+    }
+
+    const PINS = {
+      'Aparna': '2824',
+      'Arun Raj': '1409',
+      'Saral': '5506',
+      'Bavani Sri': '5012',
+      'Jane Rhinu': '4657',
+      'Kavipriya': '3286',
+      'Sneha': '2679',
+      'Gokilavaani': '9935',
+      'Varsha': '2424',
+      'Rohith': '7912',
+      'Mohanasree N': '1520',
+      'Srisaradha S': '1488',
+      'Anish N': '2535',
+      'Dharshan K': '4582',
+      'Sowmiya': '4811',
+      'Arun': '9279',
+      'Shahul': '1434',
+      'Anto Jegan': '4257',
+      'Buvaneshwari': '9928',
+      'Ajeetha': '7873',
+      'Senthil Nathan S': '4611',
+      'Dharmaprakash L': '8359',
+      'Bhargavi': '5557',
+      'Abhishek': '1106',
+      'Mary Agnes': '3615',
+      'Tanisha Das': '7924',
+      'Aman Kumar': '6574',
+      'Raghav Reddy': '5552',
+      'Gomathy V': '3547',
+      'Nagashri': '4527',
+      'Sanjivini': '6514',
+      'Ishika Bhattacharjee': '2674',
+      'Mr Lakshaya': '2519',
+      'Ms Nagashree': '7224',
+      'Mr. Neeraj': '2584',
+      'Ms. Rakshitha': '6881',
+      'Athira': '6635',
+      'Parvathy': '5333',
+      'Bavatharani': '1711',
+      'Edward Linil': '8527',
+      'Ms.Priyanshi': '9785',
+      'Ms Ruchi': '3045',
+      'Ms kavya': '7201',
+      'Mr. Nishanta': '2291',
+      'Mr. Tamilarasan D': '5803',
+      'Mrs. Sruthi V': '6925',
+      'Mr. Aakaash M': '4150',
+      'Mr. Santhosh M': '2139',
+      'Aarthi': '1750',
+      'Malarvizhi': '4733',
+      'Sakshi': '5741',
+      'Subashni': '2307',
+      'Dharani': '4814',
+      'Nayeemunnisa': '2654',
+      'Geetha': '7227',
+      'Nivetha R P': '5554',
+      'Syed Basila S': '8428',
+      'Melbi Susan': '6977',
+      'Hari Ganesh': '3664',
+      'Admin': '7065',
+    };
+
+    const COLLEGE_SECTIONS = {
+      'default': [
+        { value: 'A', label: 'I BCA - A' }, { value: 'B', label: 'I BCA - B' },
+        { value: 'II', label: 'II BCA' }, { value: 'BCH', label: 'I B.Com Honours' },
+        { value: 'BBADM', label: 'I BBA Digital Marketing' }
+      ],
+      'kamaraj-women': [{ value: 'KW_CS', label: 'I B.Sc. CS with AI' }],
+      'sst': [{ value: 'IBBA', label: 'I BBA' }, { value: 'IMCA', label: 'I MCA' }],
+      'nagarathinam': [
+        { value: 'NAIG_IBSCAI', label: 'I B.Sc AI' }, { value: 'NAIG_IIBSCAI', label: 'II B.Sc AI' },
+        { value: 'NAIG_BCFT', label: 'B.Com BC & FT' }, { value: 'NAIG_BBADM', label: 'BBA DM' },
+        { value: 'NAIG_IBSCCC', label: 'I B.Sc CC' }
+      ],
+      'studyworld': [{ value: 'BCA', label: 'BCA' }],
+      'terf': [{ value: 'TERF_IIBSCIT', label: 'II B.Sc IT' }],
+      'rathinam': [{ value: 'RCAS_BSCT', label: 'B.Sc CT (GenAI)' }, { value: 'RCAS_BCA', label: 'BCA (AI)' }],
+      'bharathidasan': [
+        { value: 'BCAS_IIBSCCT', label: 'II B.Sc CT' },
+        { value: 'BCAS_IBSCCT', label: 'I B.Sc CT' }
+      ],
+      'alliance': [
+        { value: 'ALU_IMCA_A', label: 'I MCA - A' },
+        { value: 'ALU_IMCA_B', label: 'I MCA - B' },
+        { value: 'ALU_IIBCA_AIML', label: 'II BCA AI & ML (A+B)' }
+      ],
+      'kristu': [
+        { value: 'KJ_BBAAIDS', label: 'BBA - AI & DS' },
+        { value: 'KJ_BBAFN', label: 'BBA - FinTech' }
+      ],
+      'svyasa': [{ value: 'SVYASA_IIBCA', label: 'II BCA' }],
+      'asb': [{ value: 'ASB_BCA', label: 'BCA' }, { value: 'ASB_BBA', label: 'BBA' }],
+      'vinayaga': [{ value: 'VIN_BSCAIML', label: 'B.Sc AI & ML' }, { value: 'VIN_BCOMFT', label: 'B.Com FinTech with AI' }],
+      'takshashila': [{ value: 'TAK_IIBSCCSAIML', label: 'II B.Sc CS AI & ML' }, { value: 'TAK_IBSCCSAIML', label: 'I B.Sc CS AI & ML' }, { value: 'TAK_BCOMFT', label: 'B.Com FinTech with AI' }],
+      'amet': [{ value: 'AMT_IBSCAIML', label: 'I B.Sc AI & ML' }, { value: 'AMT_IBSCAIDS', label: 'I B.Sc AI & DS' }, { value: 'AMT_IBBAEDM', label: 'I BBA E-Commerce & Digital Mktg' }, { value: 'AMT_IIBSCAIML', label: 'II B.Sc AI & ML' }, { value: 'AMT_IBCOMFT', label: 'I B.Com Fintech with AI' }],
+      'tjs': [{ value: 'TJS_IIBSCCSAI', label: 'II B.Sc CS with AI' }],
+      'sdnb': [
+        { value: 'SDNB_IBCOMFT', label: 'I B.Com FinTech with AI' },
+        { value: 'SDNB_IBSCCS1', label: 'I B.Sc. CS with AI (Shift 1)' },
+        { value: 'SDNB_IBSCCS2', label: 'I B.Sc. CS with AI (Shift 2)' },
+        { value: 'SDNB_IBSCDSAI', label: 'I B.Sc. DS & AI' },
+        { value: 'SDNB_IBBADMBA', label: 'I BBA DM & BA' },
+        { value: 'SDNB_IIBSCCS', label: 'II B.Sc. CS with AI' }
+      ],
+      'amaraavathi': [
+        { value: 'AMAR_IBCA', label: 'I BCA' },
+        { value: 'AMAR_IBSCAIML', label: 'I B.Sc. AI & ML' },
+        { value: 'AMAR_BCOMFT', label: 'B.Com FinTech' },
+        { value: 'AMAR_IIBCA', label: 'II BCA' }
+      ]
+    };
+
+    const SECTION_ROLES = {
+      'A': ['Aparna', 'Arun Raj', 'Saral', 'Admin'],
+      'B': ['Aparna', 'Arun Raj', 'Saral', 'Admin'],
+      'II': ['Aparna', 'Arun Raj', 'Saral', 'Admin'],
+      'BCH': ['Bavani Sri', 'Jane Rhinu', 'Admin'],
+      'BBADM': ['Bavani Sri', 'Jane Rhinu', 'Admin'],
+      'IBBA': ['Kavipriya', 'Rohith', 'Admin'],
+      'IMCA': ['Sneha', 'Varsha', 'Admin'],
+      'NAIG_IBSCAI': ['Mohanasree N', 'Srisaradha S', 'Admin'],
+      'NAIG_IIBSCAI': ['Mohanasree N', 'Srisaradha S', 'Admin'],
+      'NAIG_BCFT': ['Anish N', 'Admin'],
+      'NAIG_BBADM': ['Dharshan K', 'Admin'],
+      'NAIG_IBSCCC': ['Srisaradha S', 'Mohanasree N', 'Admin'],
+      'KW_CS': ['Sowmiya', 'Arun', 'Aparna', 'Saral', 'Admin'],
+      'BCA': ['Shahul', 'Admin'],
+      'TERF_IIBSCIT': ['Ajeetha', 'Admin'],
+      'RCAS_BSCT': ['Anto Jegan', 'Admin'],
+      'RCAS_BCA': ['Buvaneshwari', 'Admin'],
+      'BCAS_IIBSCCT': ['Senthil Nathan S', 'Dharmaprakash L', 'Admin'],
+      'BCAS_IBSCCT': ['Senthil Nathan S', 'Dharmaprakash L', 'Admin'],
+      'ALU_IMCA_A': ['Abhishek', 'Admin'],
+      'ALU_IMCA_B': ['Mary Agnes', 'Tanisha Das', 'Admin'],
+      'ALU_IIBCA_AIML': ['Aman Kumar', 'Raghav Reddy', 'Gomathy V', 'Nagashri', 'Sanjivini', 'Admin'],
+      'KJ_BBAAIDS': ['Ishika Bhattacharjee', 'Admin'],
+      'KJ_BBAFN': ['Ishika Bhattacharjee', 'Admin'],
+      'SVYASA_IIBCA': ['Mr Lakshaya', 'Ms Nagashree', 'Mr. Neeraj', 'Ms. Rakshitha', 'Admin'],
+      'ASB_BCA': ['Athira', 'Admin'],
+      'ASB_BBA': ['Parvathy', 'Admin'],
+      'VIN_BSCAIML': ['Bavatharani', 'Admin'],
+      'VIN_BCOMFT': ['Edward Linil', 'Admin'],
+      'TAK_IIBSCCSAIML': ['Ms.Priyanshi', 'Admin'],
+      'TAK_IBSCCSAIML': ['Ms Ruchi', 'Admin'],
+      'TAK_BCOMFT': ['Ms kavya', 'Admin'],
+      'AMT_IBSCAIML': ['Mr. Nishanta', 'Admin'],
+      'AMT_IBSCAIDS': ['Mr. Tamilarasan D', 'Admin'],
+      'AMT_IBBAEDM': ['Mrs. Sruthi V', 'Admin'],
+      'AMT_IIBSCAIML': ['Mr. Aakaash M', 'Admin'],
+      'AMT_IBCOMFT': ['Mr. Santhosh M', 'Admin'],
+      'TJS_IIBSCCSAI': ['Aarthi', 'Admin'],
+      'SDNB_IBCOMFT': ['Malarvizhi', 'Admin'],
+      'SDNB_IBSCCS1': ['Sakshi', 'Admin'],
+      'SDNB_IBSCCS2': ['Subashni', 'Admin'],
+      'SDNB_IBSCDSAI': ['Dharani', 'Admin'],
+      'SDNB_IBBADMBA': ['Nayeemunnisa', 'Admin'],
+      'SDNB_IIBSCCS': ['Geetha', 'Admin'],
+      'AMAR_IBCA': ['Nivetha R P', 'Admin'],
+      'AMAR_IBSCAIML': ['Syed Basila S', 'Admin'],
+      'AMAR_BCOMFT': ['Melbi Susan', 'Admin'],
+      'AMAR_IIBCA': ['Hari Ganesh', 'Admin']
+    };
+
+    const COLLEGE_NAMES = {
+      'kamaraj': 'Kamaraj College', 'kamaraj-women': "Kamaraj Women's College",
+      'sdnb': 'SDNB Vaishnav College for Women', 'patrician': 'Patrician College of Arts & Science',
+      'terf': "TERF's College of Arts and Science", 'sst': 'Sree Saraswathi Thyagaraja College',
+      'tjs': 'TJS College of Arts and Science', 'bharathidasan': 'Bharathidasan College of Arts and Science',
+      'nagarathinam': 'Nagarathinam Angalammal Arts & Science College',
+      'vinayaga': "Vinayaga Mission's Research Foundation School of Arts & Science",
+      'amaraavathi': 'Sri Amaraavathi College of Arts & Sciences', 'takshashila': 'Takshashila University',
+      'studyworld': 'Study World Group of Institution', 'rathinam': 'Rathinam College of Arts & Science',
+      'niche': 'Noorul Islam Centre for Higher Education (NICHE)', 'amet': 'AMET University',
+      'joy': 'Joy University', 'sasurie': 'Sasurie College of Arts and Science',
+      'alliance': 'Alliance University', 'kristu': 'Kristu Jayanti (Deemed to be University)',
+      'svyasa': 'S-VYASA University', 'asb': 'Asian School of Business'
+    };
+
+    const SECTION_LABEL_MAP = {
+      'II': 'II BCA', 'BCH': 'I B.Com Honours', 'BBADM': 'I BBA Digital Marketing',
+      'IBBA': 'I BBA', 'IMCA': 'I MCA', 'NAIG_IBSCAI': 'I B.Sc AI', 'NAIG_IIBSCAI': 'II B.Sc AI',
+      'NAIG_BCFT': 'B.Com BC & FT', 'NAIG_BBADM': 'BBA DM', 'NAIG_IBSCCC': 'I B.Sc CC',
+      'KW_CS': 'I B.Sc. CS with AI', 'BCA': 'BCA', 'TERF_IIBSCIT': 'II B.Sc IT',
+      'RCAS_BSCT': 'B.Sc CT (GenAI)', 'RCAS_BCA': 'BCA (AI)',
+      'BCAS_IIBSCCT': 'II B.Sc CT', 'BCAS_IBSCCT': 'I B.Sc CT',
+      'ALU_IMCA_A': 'I MCA - A', 'ALU_IMCA_B': 'I MCA - B', 'ALU_IIBCA_AIML': 'II BCA AI & ML (A+B)',
+      'KJ_BBAAIDS': 'BBA - AI & DS', 'KJ_BBAFN': 'BBA - FinTech',
+      'SVYASA_IIBCA': 'II BCA',
+      'ASB_BCA': 'BCA', 'ASB_BBA': 'BBA',
+      'VIN_BSCAIML': 'B.Sc AI & ML', 'VIN_BCOMFT': 'B.Com FinTech with AI',
+      'TAK_IIBSCCSAIML': 'II B.Sc CS AI & ML', 'TAK_IBSCCSAIML': 'I B.Sc CS AI & ML', 'TAK_BCOMFT': 'B.Com FinTech with AI',
+      'AMT_IBSCAIML': 'I B.Sc AI & ML', 'AMT_IBSCAIDS': 'I B.Sc AI & DS',
+      'AMT_IBBAEDM': 'I BBA E-Commerce & Digital Marketing', 'AMT_IIBSCAIML': 'II B.Sc AI & ML',
+      'AMT_IBCOMFT': 'I B.Com Fintech with AI',
+      'TJS_IIBSCCSAI': 'II B.Sc CS with AI',
+      'SDNB_IBCOMFT': 'I B.Com FinTech with AI', 'SDNB_IBSCCS1': 'I B.Sc. CS with AI (Shift 1)',
+      'SDNB_IBSCCS2': 'I B.Sc. CS with AI (Shift 2)', 'SDNB_IBSCDSAI': 'I B.Sc. DS & AI',
+      'SDNB_IBBADMBA': 'I BBA DM & BA', 'SDNB_IIBSCCS': 'II B.Sc. CS with AI',
+      'AMAR_IBCA': 'I BCA',
+      'AMAR_IBSCAIML': 'I B.Sc. AI & ML',
+      'AMAR_BCOMFT': 'B.Com FinTech',
+      'AMAR_IIBCA': 'II BCA'
+    };
+
+    // ── ADMIN SECTION DB VALUES (used for fetching from Supabase) ──
+    // FIX: was using COLLEGE_ADMIN_SECTIONS which had display labels → 0 results for most colleges
+    const COLLEGE_ADMIN_SECTION_VALUES = {
+      'default': ['A', 'B', 'II', 'BCH', 'BBADM'],
+      'kamaraj-women': ['KW_CS'],
+      'sst': ['IBBA', 'IMCA'],
+      'nagarathinam': ['NAIG_IBSCAI', 'NAIG_IIBSCAI', 'NAIG_BCFT', 'NAIG_BBADM', 'NAIG_IBSCCC'],
+      'studyworld': ['BCA'],
+      'terf': ['TERF_IIBSCIT'],
+      'rathinam': ['RCAS_BSCT', 'RCAS_BCA'],
+      'bharathidasan': ['BCAS_IIBSCCT', 'BCAS_IBSCCT'],
+      'alliance': ['ALU_IMCA_A', 'ALU_IMCA_B', 'ALU_IIBCA_AIML'],
+      'kristu': ['KJ_BBAAIDS', 'KJ_BBAFN'],
+      'svyasa': ['SVYASA_IIBCA'],
+      'asb': ['ASB_BCA', 'ASB_BBA'],
+      'vinayaga': ['VIN_BSCAIML', 'VIN_BCOMFT'],
+      'takshashila': ['TAK_IIBSCCSAIML', 'TAK_IBSCCSAIML', 'TAK_BCOMFT'],
+      'amet': ['AMT_IBSCAIML', 'AMT_IBSCAIDS', 'AMT_IBBAEDM', 'AMT_IIBSCAIML', 'AMT_IBCOMFT'],
+      'tjs': ['TJS_IIBSCCSAI'],
+      'sdnb': ['SDNB_IBCOMFT', 'SDNB_IBSCCS1', 'SDNB_IBSCCS2', 'SDNB_IBSCDSAI', 'SDNB_IBBADMBA', 'SDNB_IIBSCCS'],
+      'amaraavathi': ['AMAR_IBCA', 'AMAR_IBSCAIML', 'AMAR_BCOMFT', 'AMAR_IIBCA']
+    };
+
+    // ── ADMIN TABS: keys are DB values (so getAdminList filter matches s.section from DB) ──
+    // FIX: was using display labels as keys → tab filter never matched s.section
+    const COLLEGE_ADMIN_TABS = {
+      'default': [
+        { key: 'all', label: 'All' }, { key: 'A', label: 'I BCA - A' }, { key: 'B', label: 'I BCA - B' },
+        { key: 'II', label: 'II BCA' }, { key: 'BCH', label: 'I B.Com Honours' },
+        { key: 'BBADM', label: 'I BBA Digital Mktg' }
+      ],
+      'kamaraj-women': [{ key: 'all', label: 'All' }, { key: 'KW_CS', label: 'I B.Sc. CS with AI' }],
+      'sst': [{ key: 'all', label: 'All' }, { key: 'IBBA', label: 'I BBA' }, { key: 'IMCA', label: 'I MCA' }],
+      'nagarathinam': [
+        { key: 'all', label: 'All' }, { key: 'NAIG_IBSCAI', label: 'I B.Sc AI' }, { key: 'NAIG_IIBSCAI', label: 'II B.Sc AI' },
+        { key: 'NAIG_BCFT', label: 'B.Com BC & FT' }, { key: 'NAIG_BBADM', label: 'BBA DM' }, { key: 'NAIG_IBSCCC', label: 'I B.Sc CC' }
+      ],
+      'studyworld': [{ key: 'all', label: 'All' }, { key: 'BCA', label: 'BCA' }],
+      'terf': [{ key: 'all', label: 'All' }, { key: 'TERF_IIBSCIT', label: 'II B.Sc IT' }],
+      'rathinam': [{ key: 'all', label: 'All' }, { key: 'RCAS_BSCT', label: 'B.Sc CT (GenAI)' }, { key: 'RCAS_BCA', label: 'BCA (AI)' }],
+      'bharathidasan': [{ key: 'all', label: 'All' }, { key: 'BCAS_IIBSCCT', label: 'II B.Sc CT' }, { key: 'BCAS_IBSCCT', label: 'I B.Sc CT' }],
+      'alliance': [{ key: 'all', label: 'All' }, { key: 'ALU_IMCA_A', label: 'I MCA - A' }, { key: 'ALU_IMCA_B', label: 'I MCA - B' }, { key: 'ALU_IIBCA_AIML', label: 'II BCA AI & ML' }],
+      'kristu': [{ key: 'all', label: 'All' }, { key: 'KJ_BBAAIDS', label: 'BBA - AI & DS' }, { key: 'KJ_BBAFN', label: 'BBA - FinTech' }],
+      'svyasa': [{ key: 'all', label: 'All' }, { key: 'SVYASA_IIBCA', label: 'II BCA' }],
+      'asb': [{ key: 'all', label: 'All' }, { key: 'ASB_BCA', label: 'BCA' }, { key: 'ASB_BBA', label: 'BBA' }],
+      'vinayaga': [{ key: 'all', label: 'All' }, { key: 'VIN_BSCAIML', label: 'B.Sc AI & ML' }, { key: 'VIN_BCOMFT', label: 'B.Com FinTech AI' }],
+      'takshashila': [{ key: 'all', label: 'All' }, { key: 'TAK_IIBSCCSAIML', label: 'II B.Sc CS AI' }, { key: 'TAK_IBSCCSAIML', label: 'I B.Sc CS AI' }, { key: 'TAK_BCOMFT', label: 'B.Com FinTech AI' }],
+      'amet': [{ key: 'all', label: 'All' }, { key: 'AMT_IBSCAIML', label: 'I B.Sc AI & ML' }, { key: 'AMT_IBSCAIDS', label: 'I B.Sc AI & DS' }, { key: 'AMT_IBBAEDM', label: 'I BBA E-Com & DM' }, { key: 'AMT_IIBSCAIML', label: 'II B.Sc AI & ML' }, { key: 'AMT_IBCOMFT', label: 'B.Com Fintech AI' }],
+      'tjs': [{ key: 'all', label: 'All' }, { key: 'TJS_IIBSCCSAI', label: 'II B.Sc CS AI' }],
+      'sdnb': [
+        { key: 'all', label: 'All' }, { key: 'SDNB_IBCOMFT', label: 'B.Com FinTech AI' },
+        { key: 'SDNB_IBSCCS1', label: 'B.Sc CS AI (S1)' }, { key: 'SDNB_IBSCCS2', label: 'B.Sc CS AI (S2)' },
+        { key: 'SDNB_IBSCDSAI', label: 'B.Sc DS & AI' }, { key: 'SDNB_IBBADMBA', label: 'BBA DM & BA' },
+        { key: 'SDNB_IIBSCCS', label: 'II B.Sc CS AI' }
+      ],
+      'amaraavathi': [
+        { key: 'all', label: 'All' }, { key: 'AMAR_IBCA', label: 'I BCA' },
+        { key: 'AMAR_IBSCAIML', label: 'I B.Sc. AI & ML' }, { key: 'AMAR_BCOMFT', label: 'B.Com FinTech' },
+        { key: 'AMAR_IIBCA', label: 'II BCA' }
+      ]
+    };
+
+    const MENTOR_COLORS = {
+      'Aparna': 'var(--accent2)', 'Arun Raj': 'var(--green)', 'Saral': 'var(--amber)',
+      'Bavani Sri': '#0891b2', 'Jane Rhinu': '#9333ea', 'Kavipriya': '#db2777',
+      'Sneha': '#0891b2', 'Gokilavaani': '#16a34a', 'Varsha': '#0ea5e9', 'Rohith': '#f59e0b', 'Mohanasree N': '#7c3aed',
+      'Srisaradha S': '#0369a1', 'Anish N': '#b45309', 'Dharshan K': '#047857',
+      'Sowmiya': '#e11d48', 'Arun': '#0d9488', 'Shahul': '#7c3aed', 'Ajeetha': '#0ea5e9',
+      'Anto Jegan': '#0891b2', 'Buvaneshwari': '#9333ea',
+      'Senthil Nathan S': '#0d9488', 'Dharmaprakash L': '#7c3aed', 'Bhargavi': '#db2777',
+      'Abhishek': '#0d9488', 'Mary Agnes': '#9333ea', 'Tanisha Das': '#db2777',
+      'Aman Kumar': '#0891b2', 'Raghav Reddy': '#b45309', 'Gomathy V': '#16a34a',
+      'Nagashri': '#e11d48', 'Sanjivini': '#7c3aed',
+      'Mr Lakshaya': '#0d9488', 'Ms Nagashree': '#9333ea', 'Mr. Neeraj': '#0891b2', 'Ms. Rakshitha': '#db2777',
+      'Ishika Bhattacharjee': '#0891b2',
+      'Athira': '#0891b2', 'Parvathy': '#9333ea',
+      'Bavatharani': '#db2777', 'Edward Linil': '#0d9488',
+      'Ms.Priyanshi': '#7c3aed', 'Ms Ruchi': '#0891b2', 'Ms kavya': '#16a34a',
+      'Mr. Nishanta': '#0d9488', 'Mr. Tamilarasan D': '#9333ea', 'Mrs. Sruthi V': '#db2777',
+      'Mr. Aakaash M': '#b45309', 'Mr. Santhosh M': '#0369a1',
+      'Aarthi': '#e11d48',
+      'Malarvizhi': '#0d9488', 'Sakshi': '#7c3aed', 'Subashni': '#db2777',
+      'Dharani': '#b45309', 'Nayeemunnisa': '#0369a1', 'Geetha': '#16a34a',
+      'Nivetha R P': '#0891b2',
+      'Syed Basila S': '#9333ea',
+      'Melbi Susan': '#db2777',
+      'Hari Ganesh': '#16a34a'
+    };
+
+    // ════════ STATE ════════
+    let selectedCollegeKey = null, selectedCollegeName = null, selectedSection = null, selectedRole = null, currentUser = null;
+    let students = [], allStudents = [];
+    let progressMap = {}, evalMap = {}, approvalMap = {};
+    let adminProgressMap = {}, adminEvalMap = {}, adminApprovalMap = {};
+    let currentWeekStudent = null, currentEvalStudent = null, adminTab = 'all';
+    let weekDraft = {};
+    let peerReviews = [], peerTab = 'all', peerLoaded = false;
+    let activePopoverBtn = null;
+
+    function nameBtn(student) {
+      return `<button class="student-name-link"
+    data-project="${escHTML(student.project_title || '')}"
+    data-reg="${escHTML(student.register_number || '')}"
+    data-course="${escHTML(student.course || '')}"
+    data-mentor="${escHTML(student.mentor_assigned || '')}"
+    data-problem="${escHTML(student.problem_statement || '')}"
+    data-impact="${escHTML(student.impact_of_problem || '')}"
+    data-brand="${escHTML(student.brand_name || '')}"
+    data-type="${escHTML(student.project_type || '')}"
+    data-users="${escHTML(student.target_users || '')}"
+    data-outcome="${escHTML(student.key_outcome || '')}"
+    onclick="toggleProjectPopover(this,event)"
+  >${escHTML(student.name)}</button>`;
+    }
+
+    function toggleProjectPopover(el, e) {
+      e.stopPropagation();
+      if (activePopoverBtn === el) { hideProjectPopover(); return; }
+      if (activePopoverBtn) activePopoverBtn.classList.remove('pop-active');
+      activePopoverBtn = el;
+      el.classList.add('pop-active');
+      const pop = document.getElementById('projPopover');
+      document.getElementById('ppProject').textContent = el.dataset.project || '—';
+      let metaHTML = '';
+      const row = (label, val, multiline) => {
+        if (!val) return '';
+        if (multiline) return `<div class="proj-popover-row" style="flex-direction:column;align-items:flex-start;gap:2px;"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">${label}</span><strong style="color:var(--ink2);font-weight:500;font-size:12px;line-height:1.5;">${escHTML(val)}</strong></div>`;
+        return `<div class="proj-popover-row"><span style="min-width:80px;">${label}:</span><strong>${escHTML(val)}</strong></div>`;
+      };
+      metaHTML += row('Reg No', el.dataset.reg);
+      metaHTML += row('Course', el.dataset.course);
+      metaHTML += row('Mentor', el.dataset.mentor);
+      metaHTML += row('Brand', el.dataset.brand);
+      metaHTML += row('Type', el.dataset.type);
+      metaHTML += row('Target Users', el.dataset.users);
+      if (el.dataset.problem || el.dataset.impact || el.dataset.outcome) {
+        metaHTML += `<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">`;
+        metaHTML += row('Problem Statement', el.dataset.problem, true);
+        metaHTML += row('Impact of Problem', el.dataset.impact, true);
+        metaHTML += row('Key Outcome', el.dataset.outcome, true);
+        metaHTML += `</div>`;
+      }
+      document.getElementById('ppMeta').innerHTML = metaHTML;
+      pop.style.display = 'block';
+      const rect = el.getBoundingClientRect();
+      let left = rect.left, top = rect.bottom + 8;
+      if (left + 440 > window.innerWidth - 12) left = window.innerWidth - 452;
+      if (top + 400 > window.innerHeight - 12) top = rect.top - 408;
+      pop.style.left = Math.max(8, left) + 'px';
+      pop.style.top = Math.max(8, top) + 'px';
+    }
+
+    function hideProjectPopover() {
+      document.getElementById('projPopover').style.display = 'none';
+      if (activePopoverBtn) activePopoverBtn.classList.remove('pop-active');
+      activePopoverBtn = null;
+    }
+
+    document.addEventListener('click', function (e) {
+      const pop = document.getElementById('projPopover');
+      if (pop.style.display === 'block' && !pop.contains(e.target)) hideProjectPopover();
+    });
+
+    async function sb(path, method = 'GET', body = null) {
+      const h = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Accept': 'application/json' };
+      if (method === 'POST' || method === 'PATCH') h['Prefer'] = 'return=representation';
+      const opts = { method, headers: h };
+      if (body) opts.body = JSON.stringify(body);
+      const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, opts);
+      const text = await res.text();
+      if (!res.ok) throw new Error(text || 'Request failed: ' + res.status);
+      return text ? JSON.parse(text) : [];
+    }
+
+    const api = {
+      students: (c, s) => sb('project_students?select=*&college=eq.' + encodeURIComponent(c) + '&section=eq.' + encodeURIComponent(s) + '&order=id'),
+      myStudents: (c, s, m) => sb('project_students?select=*&college=eq.' + encodeURIComponent(c) + '&section=eq.' + encodeURIComponent(s) + '&mentor_assigned=eq.' + encodeURIComponent(m) + '&order=id'),
+      progress: (ids) => sb('weekly_progress?student_id=in.(' + ids.join(',') + ')'),
+      evaluations: (ids) => sb('mentor_evaluation?student_id=in.(' + ids.join(',') + ')'),
+      approvals: (ids) => sb('project_approval?student_id=in.(' + ids.join(',') + ')'),
+      upsertProgress: (d) => sb('weekly_progress', 'POST', d),
+      upsertEval: (d) => sb('mentor_evaluation', 'POST', d),
+      upsertApproval: (d) => sb('project_approval', 'POST', d),
+      updateProgress: (id, d) => sb('weekly_progress?id=eq.' + id, 'PATCH', d),
+      updateEval: (id, d) => sb('mentor_evaluation?id=eq.' + id, 'PATCH', d),
+      updateApproval: (id, d) => sb('project_approval?id=eq.' + id, 'PATCH', d),
+      peerAll: () => sbPeer('reviews_named?order=created_at.desc')
+    };
+
+    document.addEventListener('input', function (e) {
+      if (e.target.classList.contains('week-textarea')) { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }
+    });
+
+    function escHTML(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+    function getSectionLabel(sec) { return SECTION_LABEL_MAP[sec] || ('I BCA - ' + sec); }
+    function onCollegeChange() { const v = document.getElementById('collegeSelect').value; document.getElementById('goBtn').disabled = !v; selectedCollegeKey = v || null; }
+
+    function goToLogin() {
+      if (!selectedCollegeKey) return;
+      selectedCollegeName = COLLEGE_NAMES[selectedCollegeKey];
+      document.getElementById('loginCollegeName').textContent = selectedCollegeName;
+      document.getElementById('loginScreen').classList.add('show');
+      document.getElementById('landingScreen').style.display = 'none';
+      selectedSection = null; selectedRole = null;
+      document.getElementById('pinInput').value = '';
+      document.getElementById('loginBtn').disabled = true;
+      document.getElementById('loginError').textContent = '';
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+      populateSectionDropdown(selectedCollegeKey);
+    }
+
+    function backToLanding() { document.getElementById('loginScreen').classList.remove('show'); document.getElementById('landingScreen').style.display = 'flex'; }
+
+    function populateSectionDropdown(collegeKey) {
+      const sel = document.getElementById('sectionSelect');
+      const sections = COLLEGE_SECTIONS[collegeKey] || COLLEGE_SECTIONS['default'];
+      sel.innerHTML = '<option value="">&mdash; Choose your section &mdash;</option>';
+      sections.forEach(s => { const opt = document.createElement('option'); opt.value = s.value; opt.textContent = s.label; sel.appendChild(opt); });
+      sel.value = '';
+      renderRoleButtons(null);
+    }
+
+    function renderRoleButtons(sec) {
+      const wrap = document.getElementById('roleButtonsWrap');
+      if (!sec) { wrap.innerHTML = '<div style="grid-column:1/-1;font-size:12px;color:var(--ink3);padding:8px 0;">\u2190 Select a Department first</div>'; return; }
+      const roles = SECTION_ROLES[sec] || ['Admin'];
+      wrap.style.gridTemplateColumns = roles.length <= 3 ? 'repeat(' + roles.length + ',1fr)' : '1fr 1fr';
+      wrap.innerHTML = roles.map(r => `<button class="role-btn" data-role="${escHTML(r)}" onclick="selectRole(this)">${escHTML(r)}</button>`).join('');
+    }
+
+    function selectSectionFromDropdown(sel) { selectedSection = sel.value || null; selectedRole = null; document.querySelectorAll('[data-role]').forEach(b => b.classList.remove('selected')); renderRoleButtons(selectedSection); checkLoginReady(); }
+    function selectRole(btn) { document.querySelectorAll('[data-role]').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedRole = btn.getAttribute('data-role'); document.getElementById('loginError').textContent = ''; checkLoginReady(); }
+    function onPinInput() { document.getElementById('loginError').textContent = ''; document.getElementById('pinInput').classList.remove('error'); checkLoginReady(); }
+    function checkLoginReady() { const p = document.getElementById('pinInput').value; document.getElementById('loginBtn').disabled = !(selectedSection && selectedRole && p.length === 4); }
+
+    async function doLogin() {
+      const pin = document.getElementById('pinInput').value;
+      if (!selectedSection) { showLoginError('Please select a section'); return; }
+      if (!selectedRole) { showLoginError('Please select a role'); return; }
+      if (PINS[selectedRole] !== pin) { showLoginError('Incorrect PIN.'); document.getElementById('pinInput').classList.add('error'); document.getElementById('pinInput').value = ''; checkLoginReady(); return; }
+      currentUser = selectedRole;
+      document.getElementById('loginScreen').classList.remove('show');
+      const sectionLabel = getSectionLabel(selectedSection);
+      document.getElementById('userLabel').textContent = currentUser + ' \u00b7 ' + selectedCollegeName + ' \u2014 ' + sectionLabel;
+      const topbarCol = document.getElementById('topbarCollege');
+      topbarCol.textContent = selectedCollegeName + ' \u2014 ' + sectionLabel;
+      topbarCol.style.display = 'none';
+      if (currentUser === 'Admin') {
+        document.getElementById('nav-admin').style.display = 'flex';
+        document.getElementById('nav-students').style.display = 'none';
+        document.getElementById('nav-progress').style.display = 'none';
+        document.getElementById('nav-evaluation').style.display = 'none';
+      }
+      await initApp();
+    }
+
+    function showLoginError(m) { document.getElementById('loginError').textContent = m; }
+
+    function doLogout() {
+      currentUser = null; students = []; allStudents = []; progressMap = {}; evalMap = {}; approvalMap = {};
+      adminProgressMap = {}; adminEvalMap = {}; adminApprovalMap = {}; peerReviews = []; peerLoaded = false; peerTab = 'all';
+      selectedRole = null; selectedSection = null;
+      hideProjectPopover();
+      document.getElementById('appShell').style.display = 'none';
+      document.getElementById('landingScreen').style.display = 'flex';
+      document.getElementById('collegeSelect').value = '';
+      document.getElementById('goBtn').disabled = true;
+      document.getElementById('nav-admin').style.display = 'none';
+      document.getElementById('nav-students').style.display = 'flex';
+      document.getElementById('nav-progress').style.display = 'flex';
+      document.getElementById('nav-evaluation').style.display = 'flex';
+      document.getElementById('topbarCollege').style.display = 'none';
+      document.getElementById('peerTableBody').innerHTML = '<tr><td colspan="12"><div class="loading-peer"><span class="spinner"></span> Loading peer reviews&hellip;</div></td></tr>';
+      document.getElementById('peerSummaryCards').innerHTML = '';
+      document.getElementById('peerTabRow').innerHTML = '';
+      document.getElementById('peerStatsRow').innerHTML = '';
+      document.getElementById('finalTableBody').innerHTML = '';
+      document.getElementById('finalStatsRow').innerHTML = '';
+      showPanel('dashboard', document.getElementById('nav-dashboard'));
+    }
+
+    async function initApp() {
+      const ol = document.getElementById('loadingOverlay');
+      document.getElementById('loadingMsg').textContent = 'Loading students\u2026';
+      ol.style.display = 'flex';
+      try {
+        const col = selectedCollegeName, sec = getSectionLabel(selectedSection);
+        if (currentUser === 'Admin') {
+          // FIX: use DB section values (COLLEGE_ADMIN_SECTION_VALUES) not display labels
+          // getSectionLabel() converts each DB value to the display label used in the students table
+          const adminSectionVals = COLLEGE_ADMIN_SECTION_VALUES[selectedCollegeKey] || COLLEGE_ADMIN_SECTION_VALUES['default'];
+          const results = await Promise.all(adminSectionVals.map(sv => api.students(col, getSectionLabel(sv))));
+          allStudents = results.flat(); students = allStudents;
+        } else {
+          [students, allStudents] = await Promise.all([api.myStudents(col, sec, currentUser), api.students(col, sec)]);
+        }
+        document.getElementById('navStudentCount').textContent = students.length;
+        if (students.length > 0) {
+          const ids = students.map(s => s.id);
+          const [prog, evals, apprs] = await Promise.all([api.progress(ids), api.evaluations(ids), api.approvals(ids)]);
+          buildMaps(prog, evals, apprs, false);
+        }
+        if (currentUser === 'Admin' && allStudents.length > 0) {
+          const ids = allStudents.map(s => s.id);
+          const [prog, evals, apprs] = await Promise.all([api.progress(ids), api.evaluations(ids), api.approvals(ids)]);
+          buildMaps(prog, evals, apprs, true);
+        }
+        ol.style.display = 'none';
+        document.getElementById('appShell').style.display = 'block';
+        renderAdminTabs(); renderDashboard(); renderStudentList(); renderProgressTable(); renderEvalTable();
+        if (currentUser === 'Admin') { renderAdminTable(); renderAdminStats(); showPanel('admin', document.getElementById('nav-admin')); }
+      } catch (e) {
+        ol.style.display = 'none';
+        document.getElementById('appShell').style.display = 'block';
+        showToast('Error: ' + e.message, 'error');
+        console.error(e);
+      }
+    }
+
+    // FIX: when isAdmin=true, only populate adminXxxMap — never overwrite mentor progressMap/evalMap/approvalMap
+    function buildMaps(prog, evals, apprs, isAdmin) {
+      const pm = {}, em = {}, am = {};
+      prog.forEach(p => { if (!pm[p.student_id]) pm[p.student_id] = {}; pm[p.student_id][p.week_number] = p; });
+      evals.forEach(e => { em[e.student_id] = e; });
+      apprs.forEach(a => { am[a.student_id] = a; });
+      if (isAdmin) { adminProgressMap = pm; adminEvalMap = em; adminApprovalMap = am; }
+      else { progressMap = pm; evalMap = em; approvalMap = am; }
+    }
+
+    function showPanel(id, el) {
+      hideProjectPopover();
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + id).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      if (el) el.classList.add('active');
+      if (id === 'peer' && !peerLoaded) loadPeerReviews();
+      if (id === 'finalscore') renderFinalTable();
+    }
+
+    function getWeeksDone(sid, ua) { const m = ua ? adminProgressMap : progressMap; return Object.values(m[sid] || {}).filter(w => w.status === 'completed').length; }
+    function getScore(sid, ua) { const m = ua ? adminEvalMap : evalMap; const e = m[sid]; return e ? e.total_score : null; }
+    function getApproval(sid, ua) { const m = ua ? adminApprovalMap : approvalMap; const a = m[sid]; return a ? a.status : 'pending'; }
+    function scoreClass(s) { if (s === null) return ''; return s >= 75 ? 'score-high' : s >= 50 ? 'score-mid' : 'score-low'; }
+    function approvalBadge(s) { const m = { 'approved': '<span class="badge badge-green">Approved</span>', 'needs-revision': '<span class="badge badge-red">Needs Revision</span>', 'pending': '<span class="badge badge-grey">Pending</span>' }; return m[s] || m['pending']; }
+    function weeksBadge(n) { if (n >= 4) return '<span class="badge badge-green">4/4</span>'; if (n >= 2) return '<span class="badge badge-amber">' + n + '/4</span>'; if (n >= 1) return '<span class="badge badge-blue">' + n + '/4</span>'; return '<span class="badge badge-grey">0/4</span>'; }
+    function downloadCSV(rows, filename) { const csv = rows.map(r => r.map(v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(',')).join('\n'); const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url); showToast('CSV exported!', 'success'); }
+    function studentMatchesQuery(s, q) { if (!q) return true; return (s.name || '').toLowerCase().includes(q) || (s.project_title || '').toLowerCase().includes(q); }
+
+    function exportProgressCSV() { const q = (document.getElementById('progressSearch').value || '').toLowerCase(); const list = students.filter(s => studentMatchesQuery(s, q)); const rows = [['#', 'Name', 'Register No', 'Section', 'Course', 'Project Title', 'Mentor', 'W1 Status', 'W1 Note', 'W2 Status', 'W2 Note', 'W3 Status', 'W3 Note', 'W4 Status', 'W4 Note', 'Weeks Completed', 'Approval Status']]; list.forEach((s, i) => { const wks = progressMap[s.id] || {}, done = getWeeksDone(s.id), approval = getApproval(s.id); rows.push([i + 1, s.name, s.register_number, s.section || '', s.course || '', s.project_title || '', s.mentor_assigned || '', wks[1]?.status || 'not-started', wks[1]?.note || '', wks[2]?.status || 'not-started', wks[2]?.note || '', wks[3]?.status || 'not-started', wks[3]?.note || '', wks[4]?.status || 'not-started', wks[4]?.note || '', done + '/4', approval]); }); downloadCSV(rows, 'weekly_progress_' + new Date().toISOString().split('T')[0] + '.csv'); }
+    function exportEvalCSV() { const q = (document.getElementById('evalSearch').value || '').toLowerCase(); const list = students.filter(s => studentMatchesQuery(s, q)); const rows = [['#', 'Name', 'Register No', 'Section', 'Course', 'Project Title', 'Mentor', 'Tech Quality (/20)', 'Problem-Solution Fit (/20)', 'Effort & Ownership (/20)', 'Presentation (/20)', 'Practical Impact (/20)', 'Total Score (/100)', 'Remarks']]; list.forEach((s, i) => { const e = evalMap[s.id]; rows.push([i + 1, s.name, s.register_number, s.section || '', s.course || '', s.project_title || '', s.mentor_assigned || '', e?.tech_quality ?? '', e?.problem_fit ?? '', e?.effort_ownership ?? '', e?.presentation ?? '', e?.practical_impact ?? '', e?.total_score ?? '', e?.remarks || '']); }); downloadCSV(rows, 'mentor_evaluation_' + new Date().toISOString().split('T')[0] + '.csv'); }
+
+    function renderDashboard() {
+      const secLbl = getSectionLabel(selectedSection);
+      document.getElementById('dashTitle').textContent = currentUser === 'Admin' ? 'Admin Dashboard' : 'Welcome, ' + currentUser;
+      document.getElementById('dashSub').textContent = students.length + ' students \u00b7 ' + selectedCollegeName + ' \u2014 ' + secLbl;
+      const total = students.length, approved = students.filter(s => getApproval(s.id) === 'approved').length, scored = students.filter(s => getScore(s.id) !== null).length;
+      const avg = scored > 0 ? (students.filter(s => getScore(s.id) !== null).reduce((sm, s) => sm + getScore(s.id), 0) / scored).toFixed(1) : '--';
+      document.getElementById('statsRow').innerHTML = `<div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${total}</div><div class="stat-sub">${escHTML(secLbl)}</div></div><div class="stat-card"><div class="stat-label">Projects Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div><div class="stat-sub">of ${total}</div></div><div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored}</div><div class="stat-sub">score submitted</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div><div class="stat-sub">out of 100</div></div>`;
+      const tb = document.getElementById('dashTableBody');
+      if (!students.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#128235;</div>No students found.</div></td></tr>'; return; }
+      tb.innerHTML = students.map((s, i) => { const done = getWeeksDone(s.id), score = getScore(s.id), approval = getApproval(s.id), prog = Math.round(done / 4 * 100); return `<tr><td style="color:var(--ink3);">${i + 1}</td><td>${nameBtn(s)}</td><td><div class="prog-bar-wrap"><div class="prog-bar"><div class="prog-bar-fill" style="width:${prog}%"></div></div><span class="prog-pct">${prog}%</span></div></td><td>${approvalBadge(approval)}</td><td><span class="score-display ${scoreClass(score)}">${score !== null ? score : '--'}</span>${score !== null ? '<span style="font-size:11px;color:var(--ink3);"> /100</span>' : ''}</td></tr>`; }).join('');
+    }
+
+    function renderStudentList() {
+      const q = (document.getElementById('studentSearch').value || '').toLowerCase(), af = document.getElementById('approvalFilter').value;
+      const list = students.filter(s => studentMatchesQuery(s, q) && (!af || getApproval(s.id) === af));
+      const tb = document.getElementById('studentTableBody');
+      if (!list.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">&#128269;</div>No students match</div></td></tr>'; return; }
+      tb.innerHTML = list.map((s, i) => { const weeks = progressMap[s.id] || {}; const wbtns = [1, 2, 3, 4].map(w => { const wd = weeks[w], cls = wd ? wd.status : 'not-started'; const icon = cls === 'completed' ? '&#10003;' : cls === 'in-progress' ? '&#8230;' : String(w); const safeName = escHTML(s.name).replace(/'/g, '&#39;'); return `<button class="week-btn ${cls}" title="Week ${w}: ${cls}" onclick="openWeekModal(${s.id},'${safeName}',${w})">${icon}</button>`; }).join(''); return `<tr><td style="color:var(--ink3);">${i + 1}</td><td>${nameBtn(s)}</td><td style="font-size:12px;color:var(--ink3);">${escHTML(s.register_number || '')}</td><td><div class="week-btns">${wbtns}</div></td><td><select class="approval-select status-${getApproval(s.id)}" onchange="saveApproval(${s.id},this.value,this)"><option value="pending" ${getApproval(s.id) === 'pending' ? 'selected' : ''}>Pending</option><option value="approved" ${getApproval(s.id) === 'approved' ? 'selected' : ''}>Approved</option><option value="needs-revision" ${getApproval(s.id) === 'needs-revision' ? 'selected' : ''}>Needs Revision</option></select></td></tr>`; }).join('');
+    }
+
+    function renderProgressTable() {
+      const q = (document.getElementById('progressSearch').value || '').toLowerCase();
+      const list = students.filter(s => studentMatchesQuery(s, q));
+      const tb = document.getElementById('progressTableBody');
+      if (!list.length) { tb.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">&#128203;</div>No students found</div></td></tr>'; return; }
+      tb.innerHTML = list.map((s, i) => { const weeks = progressMap[s.id] || {}; const wCells = [1, 2, 3, 4].map(w => { const wd = weeks[w], cls = wd ? wd.status : 'not-started'; const note = wd && wd.note && wd.note.trim() ? wd.note : ''; const statusLabel = cls === 'completed' ? 'Completed' : cls === 'in-progress' ? 'In Progress' : 'Not Started'; const safeName = escHTML(s.name).replace(/'/g, '&#39;'); return `<td style="padding:8px 10px;vertical-align:top;"><div class="prog-week-cell"><button class="prog-week-card ${cls}" onclick="openWeekModal(${s.id},'${safeName}',${w})"><span class="prog-wk-status ${cls}">${statusLabel}</span><span class="prog-wk-note-text">${note ? escHTML(note) : '&mdash;'}</span></button></div></td>`; }).join(''); return `<tr><td style="color:var(--ink3);">${i + 1}</td><td>${nameBtn(s)}</td>${wCells}<td>${weeksBadge(getWeeksDone(s.id))}</td></tr>`; }).join('');
+    }
+
+    const STATUS_CYCLE = ['not-started', 'in-progress', 'completed'];
+    const STATUS_LABEL = { 'not-started': 'Not Started', 'in-progress': 'In Progress', 'completed': 'Completed' };
+    const STATUS_ICON = { 'not-started': '&#9675;', 'in-progress': '&#9675;', 'completed': '&#10003;' };
+
+    function openWeekModal(studentId, studentName, focusWeek) {
+      currentWeekStudent = { id: studentId, name: studentName };
+      document.getElementById('weekModalTitle').textContent = studentName;
+      const weeks = progressMap[studentId] || {};
+      weekDraft = {};
+      [1, 2, 3, 4].forEach(w => { const row = weeks[w]; weekDraft[w] = { status: row ? row.status : 'not-started', note: row ? (row.note || '') : '' }; });
+      renderWeekCards(focusWeek);
+      document.getElementById('weekModal').classList.add('open');
+      setTimeout(() => { const ta = document.getElementById('wk-ta-' + focusWeek); if (ta) ta.focus(); }, 220);
+    }
+
+    function renderWeekCards(activeWeek) {
+      const grid = document.getElementById('weekCardsGrid');
+      grid.innerHTML = [1, 2, 3, 4].map(w => { const d = weekDraft[w]; return `<div class="week-card wk-${d.status}" id="wk-card-${w}"><div class="week-card-head wk-${d.status}"><span class="week-card-label">Week ${w}${w === activeWeek ? ' &diams;' : ''}</span><button class="wk-cycle-btn ${d.status}" id="wk-btn-${w}" onclick="cycleWeekStatus(${w},event)">${STATUS_ICON[d.status]} ${STATUS_LABEL[d.status]}</button></div><div class="week-card-body"><textarea class="week-textarea" id="wk-ta-${w}" placeholder="Week ${w} update&hellip;" oninput="weekDraft[${w}].note=this.value">${escHTML(d.note)}</textarea></div></div>`; }).join('');
+    }
+
+    function cycleWeekStatus(w, e) { if (e) e.stopPropagation(); const cur = weekDraft[w].status; const next = STATUS_CYCLE[(STATUS_CYCLE.indexOf(cur) + 1) % 3]; weekDraft[w].status = next; const card = document.getElementById('wk-card-' + w); const head = card.querySelector('.week-card-head'); const btn = document.getElementById('wk-btn-' + w); card.className = 'week-card wk-' + next; head.className = 'week-card-head wk-' + next; btn.className = 'wk-cycle-btn ' + next; btn.innerHTML = STATUS_ICON[next] + ' ' + STATUS_LABEL[next]; }
+
+    async function saveAllWeeks() {
+      const btn = document.getElementById('saveWeekBtn'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving&hellip;';
+      const sid = currentWeekStudent.id, existing = progressMap[sid] || {};
+      try {
+        for (const w of [1, 2, 3, 4]) { const d = weekDraft[w]; const note = d.note.trim() || null; if (note && d.status === 'not-started') d.status = 'completed'; const row = existing[w]; if (row) { await api.updateProgress(row.id, { status: d.status, note, updated_by: currentUser, updated_at: new Date().toISOString() }); row.status = d.status; row.note = note; } else { const res = await api.upsertProgress({ student_id: sid, week_number: w, status: d.status, note, updated_by: currentUser }); if (!progressMap[sid]) progressMap[sid] = {}; progressMap[sid][w] = Array.isArray(res) ? res[0] : res; } }
+        showToast('Weeks saved!', 'success'); closeModal('weekModal'); renderStudentList(); renderProgressTable(); renderDashboard();
+        if (currentUser === 'Admin') { adminProgressMap = progressMap; renderAdminTable(); renderAdminStats(); }
+      } catch (e) { showToast('Error: ' + e.message, 'error'); console.error(e); }
+      finally { btn.disabled = false; btn.innerHTML = 'Save'; }
+    }
+
+    async function saveApproval(sid, status, selectEl) {
+      if (selectEl) selectEl.className = 'approval-select status-' + status;
+      try { const ex = approvalMap[sid]; if (ex) { await api.updateApproval(ex.id, { status, approved_by: currentUser, approved_at: new Date().toISOString() }); approvalMap[sid].status = status; } else { const r = await api.upsertApproval({ student_id: sid, status, approved_by: currentUser }); approvalMap[sid] = Array.isArray(r) ? r[0] : r; } showToast('Approval updated!', 'success'); renderDashboard(); if (currentUser === 'Admin') { adminApprovalMap = approvalMap; renderAdminTable(); renderAdminStats(); } } catch (e) { showToast('Error: ' + e.message, 'error'); }
+    }
+
+    function renderEvalTable() {
+      const q = (document.getElementById('evalSearch').value || '').toLowerCase();
+      const list = students.filter(s => studentMatchesQuery(s, q));
+      const tb = document.getElementById('evalTableBody');
+      if (!list.length) { tb.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">&#128202;</div>No students</div></td></tr>'; return; }
+      tb.innerHTML = list.map((s, i) => { const e = evalMap[s.id]; const sc = (k) => e ? (e[k] !== null && e[k] !== undefined ? e[k] : '--') : '--'; const total = e ? e.total_score : null; const safeName = escHTML(s.name).replace(/'/g, '&#39;'); const safeProj = escHTML(s.project_title || '').replace(/'/g, '&#39;'); return `<tr><td style="color:var(--ink3);">${i + 1}</td><td>${nameBtn(s)}</td><td style="text-align:center;">${sc('tech_quality')}</td><td style="text-align:center;">${sc('problem_fit')}</td><td style="text-align:center;">${sc('effort_ownership')}</td><td style="text-align:center;">${sc('presentation')}</td><td style="text-align:center;">${sc('practical_impact')}</td><td style="text-align:center;"><span class="score-display ${scoreClass(total)}">${total !== null ? total : '--'}</span>${total !== null ? '<span style="font-size:10px;color:var(--ink3);"> /100</span>' : ''}</td><td><button class="btn btn-primary btn-sm" onclick="openEvalModal(${s.id},'${safeName}','${safeProj}')">&#9998; ${e ? 'Edit' : 'Score'}</button></td></tr>`; }).join('');
+    }
+
+    function openEvalModal(sid, sName, pTitle) {
+      currentEvalStudent = { id: sid, name: sName, project: pTitle };
+      document.getElementById('evalModalTitle').textContent = sName;
+      document.getElementById('evalModalSub').textContent = pTitle;
+      document.getElementById('evalStudentInfo').innerHTML = `<div class="info-item"><div class="info-label">Student Name</div><div class="info-value">${escHTML(sName)}</div></div><div class="info-item"><div class="info-label">Project</div><div class="info-value">${escHTML(pTitle)}</div></div>`;
+      const e = evalMap[sid];
+      document.getElementById('sc_tech').value = e ? (e.tech_quality ?? '') : '';
+      document.getElementById('sc_fit').value = e ? (e.problem_fit ?? '') : '';
+      document.getElementById('sc_effort').value = e ? (e.effort_ownership ?? '') : '';
+      document.getElementById('sc_pres').value = e ? (e.presentation ?? '') : '';
+      document.getElementById('sc_impact').value = e ? (e.practical_impact ?? '') : '';
+      document.getElementById('evalRemarks').value = e ? (e.remarks || '') : '';
+      ['sc_tech', 'sc_fit', 'sc_effort', 'sc_pres', 'sc_impact'].forEach(id => { document.getElementById(id).classList.remove('over-limit'); document.getElementById(id).style.borderColor = ''; });
+      calcTotal();
+      document.getElementById('evalModal').classList.add('open');
+    }
+
+    function calcTotal() {
+      const fields = [{ id: 'sc_tech', bar: 'bar_tech' }, { id: 'sc_fit', bar: 'bar_fit' }, { id: 'sc_effort', bar: 'bar_effort' }, { id: 'sc_pres', bar: 'bar_pres' }, { id: 'sc_impact', bar: 'bar_impact' }];
+      let total = 0;
+      fields.forEach(({ id, bar }) => { const inp = document.getElementById(id); let v = parseInt(inp.value); if (isNaN(v) || v < 0) v = 0; if (v > 20) { inp.classList.add('over-limit'); setTimeout(() => { inp.value = 20; inp.classList.remove('over-limit'); inp.style.borderColor = 'var(--green)'; setTimeout(() => inp.style.borderColor = '', 1000); calcTotal(); }, 600); v = 20; } else { inp.classList.remove('over-limit'); inp.style.borderColor = ''; } total += v; const b = document.getElementById(bar); if (b) { b.style.width = (v / 20 * 100) + '%'; b.style.background = v >= 16 ? 'var(--green)' : v >= 10 ? 'var(--accent)' : v >= 5 ? 'var(--amber)' : 'var(--red)'; } });
+      const el = document.getElementById('scoreTotalDisplay'); el.textContent = total + ' / 100'; el.style.color = total >= 75 ? 'var(--green)' : total >= 50 ? 'var(--amber)' : 'var(--red)';
+    }
+
+    async function saveEvaluation() {
+      const btn = document.getElementById('saveEvalBtn'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving&hellip;';
+      const g = (id) => { const v = parseInt(document.getElementById(id).value); return isNaN(v) ? 0 : Math.min(20, Math.max(0, v)); };
+      const tech = g('sc_tech'), fit = g('sc_fit'), effort = g('sc_effort'), pres = g('sc_pres'), impact = g('sc_impact'), total = tech + fit + effort + pres + impact;
+      const sid = currentEvalStudent.id;
+      const data = { student_id: sid, tech_quality: tech, problem_fit: fit, effort_ownership: effort, presentation: pres, practical_impact: impact, total_score: total, remarks: document.getElementById('evalRemarks').value, submitted_by: currentUser, submitted_at: new Date().toISOString() };
+      try { const ex = evalMap[sid]; if (ex) { await api.updateEval(ex.id, data); Object.assign(evalMap[sid], data); } else { const r = await api.upsertEval(data); evalMap[sid] = Array.isArray(r) ? r[0] : r; } showToast('Evaluation saved!', 'success'); closeModal('evalModal'); renderEvalTable(); renderDashboard(); renderStudentList(); if (currentUser === 'Admin') { adminEvalMap = evalMap; renderAdminTable(); renderAdminStats(); } } catch (e) { showToast('Error: ' + e.message, 'error'); } finally { btn.disabled = false; btn.innerHTML = 'Save Evaluation'; }
+    }
+
+    // ════════ PEER EVALUATION ════════
+    async function loadPeerReviews() {
+      peerLoaded = true;
+      document.getElementById('peerTableBody').innerHTML = '<tr><td colspan="12"><div class="loading-peer"><span class="spinner"></span> Loading peer reviews&hellip;</div></td></tr>';
+      document.getElementById('peerSummaryCards').innerHTML = '';
+      document.getElementById('peerStatsRow').innerHTML = '';
+      try {
+        if (currentUser === 'Admin') { peerReviews = await api.peerAll(); }
+        else { const all = await api.peerAll(); const myStudentRegs = new Set(students.map(s => s.register_number)); peerReviews = all.filter(r => myStudentRegs.has(r.project_reg)); }
+        renderPeerTabs(); renderPeerSummary(); renderPeerTable(); renderPeerStats();
+      } catch (e) { document.getElementById('peerTableBody').innerHTML = `<tr><td colspan="12"><div class="empty-state"><div class="empty-icon">&#9888;</div>Failed to load: ${escHTML(e.message)}</div></td></tr>`; showToast('Peer error: ' + e.message, 'error'); }
+    }
+
+    function renderPeerTabs() {
+      const colleges = [...new Set(peerReviews.map(r => r.reviewer_college_name || r.reviewer_college || '').filter(Boolean))].sort();
+      const tabs = [{ key: 'all', label: 'All (' + peerReviews.length + ')' }, ...colleges.map(c => ({ key: c, label: c.split(' ').slice(0, 2).join(' ') }))];
+      const row = document.getElementById('peerTabRow');
+      row.innerHTML = tabs.map((t, i) => `<button class="tab-btn${i === 0 ? ' active' : ''}" onclick="setPeerTab('${escHTML(t.key).replace(/'/g, '&#39;')}',this)">${escHTML(t.label)}</button>`).join('');
+      peerTab = 'all';
+    }
+
+    function setPeerTab(tab, btn) { peerTab = tab; document.querySelectorAll('#peerTabRow .tab-btn').forEach(b => b.classList.remove('active')); if (btn) btn.classList.add('active'); renderPeerSummary(); renderPeerTable(); renderPeerStats(); }
+
+    function getFilteredPeerReviews() {
+      const q = (document.getElementById('peerSearch').value || '').toLowerCase();
+      return peerReviews.filter(r => { const matchTab = peerTab === 'all' || (r.reviewer_college_name || r.reviewer_college || '') === peerTab; const matchSearch = !q || (r.project_title || '').toLowerCase().includes(q) || (r.reviewer_name || '').toLowerCase().includes(q) || (r.project_owner_name || '').toLowerCase().includes(q); return matchTab && matchSearch; });
+    }
+
+    function peerScoreChip(v) { if (v === null || v === undefined) return '<span class="peer-score-chip peer-score-na">—</span>'; const cls = v >= 8 ? 'peer-score-high' : v >= 5 ? 'peer-score-mid' : 'peer-score-low'; return `<span class="peer-score-chip ${cls}">${v}</span>`; }
+    function peerTotalClass(t) { return t >= 35 ? 'score-high' : t >= 25 ? 'score-mid' : 'score-low'; }
+
+    function renderPeerTable() {
+      const list = getFilteredPeerReviews(); const tb = document.getElementById('peerTableBody');
+      if (!list.length) { tb.innerHTML = '<tr><td colspan="12"><div class="empty-state"><div class="empty-icon">&#128202;</div>No peer reviews found</div></td></tr>'; return; }
+      tb.innerHTML = list.map((r, i) => { const total50 = (r.clarity || 0) + (r.innovation || 0) + (r.execution || 0) + (r.usability || 0) + (r.overall || 0); const college = r.reviewer_college_name || r.reviewer_college || '—'; const collegePill = `<span style="font-size:10px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 7px;border-radius:99px;white-space:nowrap;">${escHTML(college)}</span>`; const submittedAt = r.created_at ? new Date(r.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ''; return `<tr><td style="color:var(--ink3);font-size:11px;">${i + 1}</td><td style="max-width:160px;"><div style="font-size:12px;font-weight:700;color:var(--ink);line-height:1.4;">${escHTML(r.project_title || '—')}</div></td><td style="font-size:12px;font-weight:600;">${escHTML(r.project_owner_name || '—')}</td><td><div style="font-size:12px;color:var(--accent2);font-weight:700;">${escHTML(r.reviewer_name || '—')}</div>${submittedAt ? `<div style="font-size:10px;color:var(--ink3);">${submittedAt}</div>` : ''}</td><td>${collegePill}</td><td style="text-align:center;">${peerScoreChip(r.clarity)}</td><td style="text-align:center;">${peerScoreChip(r.innovation)}</td><td style="text-align:center;">${peerScoreChip(r.execution)}</td><td style="text-align:center;">${peerScoreChip(r.usability)}</td><td style="text-align:center;">${peerScoreChip(r.overall)}</td><td style="text-align:center;"><span class="score-display ${peerTotalClass(total50)}" style="font-size:16px;">${total50}</span><span style="font-size:10px;color:var(--ink3);"> /50</span></td><td style="font-size:11px;color:var(--ink3);max-width:140px;">${r.comments ? escHTML(r.comments.substring(0, 80)) + (r.comments.length > 80 ? '&hellip;' : '') : '&mdash;'}</td></tr>`; }).join('');
+    }
+
+    function renderPeerStats() {
+      const list = getFilteredPeerReviews(); const total = list.length; const projects = new Set(list.map(r => r.project_reg)).size; const reviewers = new Set(list.map(r => r.reviewer_reg)).size; const avgTotal = total > 0 ? (list.reduce((s, r) => s + (r.clarity + r.innovation + r.execution + r.usability + r.overall), 0) / total).toFixed(1) : '--';
+      document.getElementById('peerStatsRow').innerHTML = `<div class="stat-card"><div class="stat-label">Total Reviews</div><div class="stat-value" style="color:var(--accent2);">${total}</div></div><div class="stat-card"><div class="stat-label">Projects Reviewed</div><div class="stat-value" style="color:var(--blue);">${projects}</div></div><div class="stat-card"><div class="stat-label">Unique Reviewers</div><div class="stat-value" style="color:var(--green);">${reviewers}</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avgTotal}</div><div class="stat-sub">out of 50</div></div>`;
+    }
+
+    function renderPeerSummary() {
+      const list = getFilteredPeerReviews(); const byProject = {};
+      list.forEach(r => { const key = r.project_reg; if (!byProject[key]) byProject[key] = { title: r.project_title, owner: r.project_owner_name, reviews: [] }; byProject[key].reviews.push(r); });
+      const container = document.getElementById('peerSummaryCards');
+      if (!Object.keys(byProject).length) { container.innerHTML = ''; return; }
+      container.innerHTML = Object.values(byProject).sort((a, b) => b.reviews.length - a.reviews.length).map(p => { const n = p.reviews.length; const criteria = ['clarity', 'innovation', 'execution', 'usability', 'overall']; const criteriaLabels = ['Clarity', 'Innovation', 'Execution', 'Usability', 'Overall']; const criteriaAvgs = criteria.map(c => (p.reviews.reduce((s, r) => s + (r[c] || 0), 0) / n).toFixed(1)); const totalOut50 = criteriaAvgs.reduce((s, v) => s + parseFloat(v), 0).toFixed(1); const cls = peerTotalClass(parseFloat(totalOut50)); const criteriaHTML = criteriaAvgs.map((v, i) => `<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);"><span style="font-size:11px;color:var(--ink3);">${criteriaLabels[i]}</span><div style="display:flex;align-items:center;gap:6px;"><div style="width:60px;height:4px;background:var(--surface2);border-radius:99px;overflow:hidden;"><div style="width:${parseFloat(v) / 10 * 100}%;height:100%;border-radius:99px;background:${parseFloat(v) >= 7 ? 'var(--green)' : parseFloat(v) >= 5 ? 'var(--amber)' : 'var(--red)'};"></div></div><span style="font-size:11px;font-weight:700;min-width:22px;text-align:right;">${v}</span></div></div>`).join(''); return `<div class="peer-project-card"><div class="peer-project-owner">${escHTML(p.owner || '—')}</div><div class="peer-project-title">${escHTML(p.title || '—')}</div><div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;"><div><div class="peer-avg-large ${cls}">${totalOut50}<span style="font-size:13px;font-weight:400;color:var(--ink3);"> /50</span></div><div class="peer-review-count">${n} review${n !== 1 ? 's' : ''}</div></div><div>${n >= 4 ? '<span class="badge badge-green">Well Reviewed</span>' : n >= 2 ? '<span class="badge badge-amber">Few Reviews</span>' : '<span class="badge badge-grey">1 Review</span>'}</div></div><div>${criteriaHTML}</div></div>`; }).join('');
+    }
+
+    function exportPeerCSV() { const list = getFilteredPeerReviews(); const rows = [['#', 'Project Title', 'Owner', 'Owner Reg', 'Reviewer', 'Reviewer Reg', 'Reviewer College', 'Clarity', 'Innovation', 'Execution', 'Usability', 'Overall', 'Total /50', 'Comments', 'Submitted At']]; list.forEach((r, i) => { const total50 = (r.clarity || 0) + (r.innovation || 0) + (r.execution || 0) + (r.usability || 0) + (r.overall || 0); rows.push([i + 1, r.project_title || '', r.project_owner_name || '', r.project_reg || '', r.reviewer_name || '', r.reviewer_reg || '', r.reviewer_college_name || r.reviewer_college || '', r.clarity, r.innovation, r.execution, r.usability, r.overall, total50, r.comments || '', r.created_at ? new Date(r.created_at).toLocaleString() : '']); }); downloadCSV(rows, 'peer_reviews_' + new Date().toISOString().split('T')[0] + '.csv'); }
+
+    // ════════ FINAL SCORE ════════
+    function getFinalGrade(score, notStarted) { if (notStarted) return { label: 'Not Started', cls: 'badge-grey' }; if (score >= 85) return { label: 'Excellent', cls: 'badge-green' }; if (score >= 70) return { label: 'Very Good', cls: 'badge-blue' }; if (score >= 55) return { label: 'Good', cls: 'badge-amber' }; if (score >= 40) return { label: 'Pass', cls: 'badge-grey' }; return { label: 'Fail', cls: 'badge-red' }; }
+    function getPeerRawForStudent(reg) { const reviews = peerReviews.filter(r => r.project_reg === reg); if (!reviews.length) return 0; const avg = reviews.reduce((sum, r) => sum + (r.clarity || 0) + (r.innovation || 0) + (r.execution || 0) + (r.usability || 0) + (r.overall || 0), 0) / reviews.length; return parseFloat(avg.toFixed(1)); }
+
+    function renderFinalTable() {
+      const list = students; const tb = document.getElementById('finalTableBody');
+      if (!list.length) { tb.innerHTML = '<tr><td colspan="11"><div class="empty-state"><div class="empty-icon">&#9733;</div>No students found.</div></td></tr>'; renderFinalStats([]); return; }
+      tb.innerHTML = list.map((s, i) => { const peerRaw = getPeerRawForStudent(s.register_number); const mentorRaw = getScore(s.id); const peerScore = parseFloat((peerRaw / 50 * 30).toFixed(1)); const mentorScore = mentorRaw !== null ? parseFloat((mentorRaw / 100 * 70).toFixed(1)) : null; const notStarted = peerRaw === 0 && mentorRaw === null; const finalScore = notStarted ? 0 : parseFloat((peerScore + (mentorScore ?? 0)).toFixed(1)); const grade = getFinalGrade(finalScore, notStarted); const peerScoreCls = notStarted ? '' : (peerScore >= 22 ? 'score-high' : peerScore >= 15 ? 'score-mid' : 'score-low'); const mentorScoreCls = mentorScore !== null ? (mentorScore >= 52 ? 'score-high' : mentorScore >= 35 ? 'score-mid' : 'score-low') : ''; const finalCls = notStarted ? '' : (finalScore >= 75 ? 'score-high' : finalScore >= 50 ? 'score-mid' : 'score-low'); const mc = MENTOR_COLORS[s.mentor_assigned] || 'var(--ink2)'; return `<tr><td style="color:var(--ink3);">${i + 1}</td><td>${nameBtn(s)}</td><td style="font-size:12px;color:var(--ink3);">${escHTML(s.register_number || '')}</td><td style="font-size:12px;">${escHTML(s.course || '')}</td><td style="font-size:12px;color:${mc};font-weight:600;">${escHTML(s.mentor_assigned || '—')}</td><td style="text-align:center;"><span class="score-display" style="font-size:15px;">${peerRaw}</span><span style="font-size:10px;color:var(--ink3);"> /50</span></td><td style="text-align:center;"><span class="score-display ${peerScoreCls}" style="font-size:15px;">${peerScore}</span><span style="font-size:10px;color:var(--ink3);"> /30</span></td><td style="text-align:center;">${mentorRaw !== null ? `<span class="score-display" style="font-size:15px;">${mentorRaw}</span><span style="font-size:10px;color:var(--ink3);"> /100</span>` : '<span style="color:var(--ink3);">—</span>'}</td><td style="text-align:center;">${mentorScore !== null ? `<span class="score-display ${mentorScoreCls}" style="font-size:15px;">${mentorScore}</span><span style="font-size:10px;color:var(--ink3);"> /70</span>` : '<span style="color:var(--ink3);">—</span>'}</td><td style="text-align:center;"><span class="score-display ${finalCls}" style="font-size:20px;">${finalScore}</span><span style="font-size:10px;color:var(--ink3);"> /100</span></td><td style="text-align:center;"><span class="badge ${grade.cls}">${grade.label}</span></td></tr>`; }).join('');
+      renderFinalStats(list);
+    }
+
+    function renderFinalStats(list) {
+      const scored = list.filter(s => { const pr = getPeerRawForStudent(s.register_number); const mr = getScore(s.id); return !(pr === 0 && mr === null); });
+      const finals = scored.map(s => { const pr = getPeerRawForStudent(s.register_number); const mr = getScore(s.id); return parseFloat(((pr / 50 * 30) + ((mr ?? 0) / 100 * 70)).toFixed(1)); });
+      const avg = finals.length ? (finals.reduce((a, b) => a + b, 0) / finals.length).toFixed(1) : '--';
+      const excellent = finals.filter(f => f >= 85).length, vgood = finals.filter(f => f >= 70 && f < 85).length;
+      document.getElementById('finalStatsRow').innerHTML = `<div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value">${list.length}</div></div><div class="stat-card"><div class="stat-label">Evaluated</div><div class="stat-value" style="color:var(--accent2);">${scored.length}</div></div><div class="stat-card"><div class="stat-label">Avg Final Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div><div class="stat-sub">out of 100</div></div><div class="stat-card"><div class="stat-label">Excellent+VG</div><div class="stat-value" style="color:var(--green);">${excellent + vgood}</div><div class="stat-sub">${excellent} exc, ${vgood} vg</div></div>`;
+    }
+
+    function exportFinalCSV() { const rows = [['#', 'Name', 'Register No', 'Course', 'Mentor', 'Peer Raw (/50)', 'Peer Score (/30)', 'Mentor Raw (/100)', 'Mentor Score (/70)', 'Final Score (/100)', 'Grade']]; students.forEach((s, i) => { const peerRaw = getPeerRawForStudent(s.register_number); const mentorRaw = getScore(s.id); const peerScore = parseFloat((peerRaw / 50 * 30).toFixed(1)); const mentorScore = mentorRaw !== null ? parseFloat((mentorRaw / 100 * 70).toFixed(1)) : ''; const notStarted = peerRaw === 0 && mentorRaw === null; const finalScore = notStarted ? 0 : parseFloat((peerScore + (mentorScore || 0)).toFixed(1)); const grade = getFinalGrade(finalScore, notStarted); rows.push([i + 1, s.name, s.register_number, s.course || '', s.mentor_assigned || '', peerRaw, peerScore, mentorRaw ?? '', mentorScore, finalScore, grade.label]); }); downloadCSV(rows, 'final_scores_' + new Date().toISOString().split('T')[0] + '.csv'); }
+
+    // ════════ ADMIN ════════
+    function renderAdminTabs() {
+      // FIX: use COLLEGE_ADMIN_TABS which now has DB values as keys
+      const tabs = COLLEGE_ADMIN_TABS[selectedCollegeKey] || COLLEGE_ADMIN_TABS['default'];
+      const row = document.getElementById('adminTabRow');
+      row.innerHTML = tabs.map((t, i) => `<button class="tab-btn${i === 0 ? ' active' : ''}" onclick="setAdminTab('${escHTML(t.key).replace(/'/g, '&#39;')}',this)">${escHTML(t.label)}</button>`).join('');
+      adminTab = 'all';
+    }
+
+    function setAdminTab(tab, btn) { adminTab = tab; document.querySelectorAll('#adminTabRow .tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderAdminTable(); renderAdminStats(); }
+
+    // FIX: s.section is a DB value (e.g. "NAIG_IBSCAI"); adminTab is now also a DB value → filter works correctly
+    function getAdminList() { if (adminTab === 'all') return allStudents; const label = getSectionLabel(adminTab); return allStudents.filter(s => s.section === label); }
+    function renderAdminStats() {
+      const list = getAdminList();
+      const approved = list.filter(s => adminApprovalMap[s.id]?.status === 'approved').length;
+      const scored = list.filter(s => adminEvalMap[s.id]).length;
+      const avg = scored > 0 ? (list.reduce((sm, s) => sm + (adminEvalMap[s.id]?.total_score || 0), 0) / scored).toFixed(1) : '--';
+      document.getElementById('adminStatsRow').innerHTML = `<div class="stat-card"><div class="stat-label">Students</div><div class="stat-value">${list.length}</div></div><div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" style="color:var(--green);">${approved}</div></div><div class="stat-card"><div class="stat-label">Avg Score</div><div class="stat-value" style="color:var(--amber);">${avg}</div></div>`;
+    }
+
+    function renderAdminTable() {
+      const list = getAdminList(); const tb = document.getElementById('adminTableBody');
+      if (!list.length) { tb.innerHTML = '<tr><td colspan="7"><div class="empty-state">No students found in the database for this section.</div></td></tr>'; return; }
+      tb.innerHTML = list.map((s, i) => { const done = getWeeksDone(s.id, true), score = getScore(s.id, true), approval = getApproval(s.id, true); const mc = MENTOR_COLORS[s.mentor_assigned] || 'var(--ink2)'; return `<tr><td style="color:var(--ink3);">${i + 1}</td><td>${nameBtn(s)}</td><td><span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:99px;">${escHTML(s.section || '')}</span></td><td style="font-size:12px;font-weight:600;color:${mc};">${escHTML(s.mentor_assigned || '')}</td><td style="text-align:center;">${weeksBadge(done)}</td><td>${approvalBadge(approval)}</td><td style="text-align:center;"><span class="score-display ${scoreClass(score)}">${score !== null ? score : '--'}</span></td></tr>`; }).join('');
+    }
+
+    function exportCSV() {
+      const list = getAdminList();
+      const rows = [['#', 'Name', 'Register No', 'Section', 'Course', 'Project Title', 'Mentor', 'Phone', 'Email', 'W1 Status', 'W1 Note', 'W2 Status', 'W2 Note', 'W3 Status', 'W3 Note', 'W4 Status', 'W4 Note', 'Tech Quality', 'Problem Fit', 'Effort', 'Presentation', 'Impact', 'Total Score', 'Approval']];
+      list.forEach((s, i) => { const wks = adminProgressMap[s.id] || {}, e = adminEvalMap[s.id], a = adminApprovalMap[s.id]; rows.push([i + 1, s.name, s.register_number, s.section || '', s.course || '', s.project_title || '', s.mentor_assigned || '', s.phone || '', s.email || '', wks[1]?.status || 'not-started', wks[1]?.note || '', wks[2]?.status || 'not-started', wks[2]?.note || '', wks[3]?.status || 'not-started', wks[3]?.note || '', wks[4]?.status || 'not-started', wks[4]?.note || '', e?.tech_quality ?? '', e?.problem_fit ?? '', e?.effort_ownership ?? '', e?.presentation ?? '', e?.practical_impact ?? '', e?.total_score ?? '', a?.status || 'pending']); });
+      downloadCSV(rows, 'students_' + adminTab + '_' + new Date().toISOString().split('T')[0] + '.csv');
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    let toastTimeout;
+    function showToast(msg, type = 'success') { const t = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg; document.getElementById('toastDot').className = 'toast-dot ' + type; t.classList.add('show'); clearTimeout(toastTimeout); toastTimeout = setTimeout(() => t.classList.remove('show'), 3500); }
+  </script>
+</body>
+
+</html>
