@@ -1844,6 +1844,7 @@
             <option value="terf">TERF's College of Arts and Science</option>
             <option value="tjs">TJS College of Arts and Science</option>
             <option value="vinayaga">Vinayaga Mission's Research Foundation School of Arts &amp; Science</option>
+            <option value="vlb">VLB Janakiammal College of Arts and Science</option>
           </select>
           <span class="college-select-icon">&#9662;</span>
         </div>
@@ -2456,6 +2457,10 @@
         { value: 'AMAR_IBSCAIML', label: 'I B.Sc. AI & ML' },
         { value: 'AMAR_BCOMFT', label: 'B.Com FinTech' },
         { value: 'AMAR_IIBCA', label: 'II BCA' }
+      ],
+      'vlb': [
+        { value: 'VLB_IBSCCSAIDS', label: 'I- BSC CS AI & DS' },
+        { value: 'VLB_IBCOMSCAI', label: 'I-BCOM (SCM & AI)' }
       ]
     };
 
@@ -2507,7 +2512,9 @@
       'AMAR_IBCA': ['Nivetha R P', 'Admin'],
       'AMAR_IBSCAIML': ['Syed Basila S', 'Admin'],
       'AMAR_BCOMFT': ['Melbi Susan', 'Admin'],
-      'AMAR_IIBCA': ['Hari Ganesh', 'Admin']
+      'AMAR_IIBCA': ['Hari Ganesh', 'Admin'],
+      'VLB_IBSCCSAIDS': ['Admin'],
+      'VLB_IBCOMSCAI': ['Admin']
     };
 
     const COLLEGE_NAMES = {
@@ -2522,7 +2529,8 @@
       'niche': 'Noorul Islam Centre for Higher Education (NICHE)', 'amet': 'AMET University',
       'joy': 'Joy University', 'sasurie': 'Sasurie College of Arts and Science',
       'alliance': 'Alliance University', 'kristu': 'Kristu Jayanti (Deemed to be University)',
-      'svyasa': 'S-VYASA University', 'asb': 'Asian School of Business'
+      'svyasa': 'S-VYASA University', 'asb': 'Asian School of Business',
+      'vlb': 'VLB Janakiammal College of Arts and Science'
     };
 
     const SECTION_LABEL_MAP = {
@@ -2548,7 +2556,9 @@
       'AMAR_IBCA': 'I BCA',
       'AMAR_IBSCAIML': 'I B.Sc. AI & ML',
       'AMAR_BCOMFT': 'B.Com FinTech',
-      'AMAR_IIBCA': 'II BCA'
+      'AMAR_IIBCA': 'II BCA',
+      'VLB_IBSCCSAIDS': 'I- BSC CS AI & DS',
+      'VLB_IBCOMSCAI': 'I-BCOM (SCM & AI)'
     };
 
     // ── ADMIN SECTION DB VALUES (used for fetching from Supabase) ──
@@ -2571,7 +2581,8 @@
       'amet': ['AMT_IBSCAIML', 'AMT_IBSCAIDS', 'AMT_IBBAEDM', 'AMT_IIBSCAIML', 'AMT_IBCOMFT'],
       'tjs': ['TJS_IIBSCCSAI'],
       'sdnb': ['SDNB_IBCOMFT', 'SDNB_IBSCCS1', 'SDNB_IBSCCS2', 'SDNB_IBSCDSAI', 'SDNB_IBBADMBA', 'SDNB_IIBSCCS'],
-      'amaraavathi': ['AMAR_IBCA', 'AMAR_IBSCAIML', 'AMAR_BCOMFT', 'AMAR_IIBCA']
+      'amaraavathi': ['AMAR_IBCA', 'AMAR_IBSCAIML', 'AMAR_BCOMFT', 'AMAR_IIBCA'],
+      'vlb': ['VLB_IBSCCSAIDS', 'VLB_IBCOMSCAI']
     };
 
     // ── ADMIN TABS: keys are DB values (so getAdminList filter matches s.section from DB) ──
@@ -2610,6 +2621,11 @@
         { key: 'all', label: 'All' }, { key: 'AMAR_IBCA', label: 'I BCA' },
         { key: 'AMAR_IBSCAIML', label: 'I B.Sc. AI & ML' }, { key: 'AMAR_BCOMFT', label: 'B.Com FinTech' },
         { key: 'AMAR_IIBCA', label: 'II BCA' }
+      ],
+      'vlb': [
+        { key: 'all', label: 'All' },
+        { key: 'VLB_IBSCCSAIDS', label: 'I- BSC CS AI & DS' },
+        { key: 'VLB_IBCOMSCAI', label: 'I-BCOM (SCM & AI)' }
       ]
     };
 
